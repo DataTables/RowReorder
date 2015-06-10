@@ -1,0 +1,12 @@
+{
+	"name": "datatables-rowreorder",
+	"version": "1.0.0",
+	"main": [
+		"js/dataTables.rowReorder.js",
+		"css/dataTables.rowReorder.css"
+	],
+	"dependencies": {
+		"jquery": ">=1.7.0",
+		"datatables": ">=1.10.8"
+	}
+}

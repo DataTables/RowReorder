@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="html" table-class="display" order="1">
+
+<css lib="datatables rowreorder" />
+<js lib="jquery datatables rowreorder">
+<![CDATA[
+
+$(document).ready(function() {
+	var table = $('#example').DataTable( {
+		rowReorder: true
+	} );
+
+	table.on( 'row-reorder', function ( e, full, id ) {
+		console.log( e, full, id );
+	} );
+} );
+
+]]>
+</js>
+
+<title lib="RowReorder">Basic initialisation</title>
+
+<info><![CDATA[
+
+
+
+]]></info>
+
+</dt-example>
+
