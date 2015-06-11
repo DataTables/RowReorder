@@ -1,10 +1,5 @@
 
-$open-button-background: #008CBA !default;
+$move-outline: 2px solid #337ab7 !default;
+$moved-outline: 2px solid #888 !default;
 
-@import 'responsive.dataTables.scss';
-
-table.dataTable > tbody > tr.child {
-	ul {
-		font-size: 1em;
-	}
-}
+@import 'rowReorder.dataTables.scss';

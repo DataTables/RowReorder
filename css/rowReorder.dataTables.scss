@@ -1,13 +1,16 @@
 
+$move-outline: 2px solid #888 !default;
+$moved-outline: 2px solid #555 !default;
+
 table.dt-rowReorder-float {
 	position: absolute !important;
 	opacity: 0.8;
 	table-layout: static;
-	outline: 2px solid #888;
+	outline: $move-outline;
 }
 
 tr.dt-rowReorder-moving {
-	outline: 2px solid #555;
+	outline: $moved-outline;
 }
 
 body.dt-rowReorder-noOverflow {

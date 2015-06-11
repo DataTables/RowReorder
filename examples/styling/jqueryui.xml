@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html-wide" table-class="display responsive nowrap" order="3" framework="jqueryui">
+<dt-example table-type="sequence" table-class="display" order="1" framework="jqueryui">
 
-<css lib="datatables responsive"/>
-<js lib="jquery datatables responsive">
+<css lib="datatables rowreorder"/>
+<js lib="jquery datatables rowreorder">
 <![CDATA[
 
 $(document).ready(function() {
-	$('#example').DataTable();
+	$('#example').DataTable( {
+		rowReorder: true
+	} );
 } );
 
 ]]>
 </js>
 
-<title lib="Responsive">jQuery UI styling</title>
+<title lib="RowReorder">jQuery UI styling</title>
 
 <info><![CDATA[
 
-This example shows DataTables and Responsive being used with [jQuery UI](http://jqueryui.com/) providing the base styling information.
+This example shows DataTables and RowReorder being used with [jQuery UI](http://jqueryui.com/) providing the base styling information.
 
 ]]></info>
 
