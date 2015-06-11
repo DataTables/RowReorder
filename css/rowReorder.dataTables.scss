@@ -16,3 +16,8 @@ tr.dt-rowReorder-moving {
 body.dt-rowReorder-noOverflow {
 	overflow-x: hidden;
 }
+
+table.dataTable td.reorder {
+	text-align: center;
+	cursor: move;
+}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="sequence" table-class="display" order="2">
+
+<css lib="datatables rowreorder" />
+<js lib="jquery datatables rowreorder">
+<![CDATA[
+
+$(document).ready(function() {
+	var table = $('#example').DataTable( {
+		rowReorder: {
+			snapX: 10
+		}
+	} );
+} );
+
+]]>
+</js>
+
+<title lib="RowReorder">Horizontal snap</title>
+
+<info><![CDATA[
+
+By default, when a row is dragged around a page with RowReorder, it will follow the mouse for both horizontal and vertical movements. However, you may wish to restrict the movement of the following row to just the vertical axis. This can be done with the `rr-init rowReorder.snapX` option.
+
+This option can be used to fix the row to the table's left, or can be used to offset the row as is done in this example.
+
+]]></info>
+
+</dt-example>
+

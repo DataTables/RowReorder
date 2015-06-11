@@ -18,7 +18,9 @@ $(document).ready(function() {
 
 <info><![CDATA[
 
+This trivial example shows the use of the `rr-init rowReorder` property being used to enable RowReorder on a DataTable. The first column in the table is a sequence number that provides the basis for the ordering. To change a row's order, simply click and drag the row.
 
+Note that ordering is enabled on all columns in this example - you may wish to [restrict ordering to just the sequence column](restrictedOrdering.html) to help prevent potential user confusion if they reorder when the table ordering is performed on a different column.
 
 ]]></info>
 

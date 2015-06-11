@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="sequence" table-class="display" order="3">
+
+<css lib="datatables rowreorder" />
+<js lib="jquery datatables rowreorder">
+<![CDATA[
+
+$(document).ready(function() {
+	var table = $('#example').DataTable( {
+		rowReorder: {
+			selector: 'tr'
+		}
+	} );
+} );
+
+]]>
+</js>
+
+<title lib="RowReorder">Full row selection</title>
+
+<info><![CDATA[
+
+The `rr-init rowReorder.selector` option provides the ability to define which element in a table row will provide the row reordering handle to the end user. This could be a button in an _Actions_ column (which might also provide options for editing and deleting a row), or any other element.
+
+By default only the first cell in the row will trigger the reordering action. This example shows the entire row being able to start the reorder. Simply click and drag anywhere on the row.
+
+]]></info>
+
+</dt-example>
+

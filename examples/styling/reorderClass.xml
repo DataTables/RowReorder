@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="sequence" table-class="display" order="1">
+
+<css lib="datatables rowreorder" />
+<js lib="jquery datatables rowreorder">
+<![CDATA[
+
+$(document).ready(function() {
+	var table = $('#example').DataTable( {
+		rowReorder: true,
+		columnDefs: [
+			{ orderable: true, className: 'reorder', targets: 0 },
+			{ orderable: false, targets: '_all' }
+		]
+	} );
+} );
+
+]]>
+</js>
+
+<title lib="RowReorder">Selector cell styling</title>
+
+<info><![CDATA[
+
+The RowReorder stylesheets provide a `-string reorder` class that can be applied to the column that will start row reordering (done with the `dt-init columns.className` option).
+
+This example shows that in action on the first column in the table.
+
+]]></info>
+
+</dt-example>
+

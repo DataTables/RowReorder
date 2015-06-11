@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="sequence" table-class="display" order="2">
+
+<css lib="datatables rowreorder">
+	#result {
+		border: 1px solid #888;
+		background: #f7f7f7;
+		padding: 1em;
+		margin-bottom: 1em;
+	}
+</css>
+<js lib="jquery datatables rowreorder">
+<![CDATA[
+
+$(document).ready(function() {
+	var table = $('#example').DataTable( {
+		rowReorder: true
+	} );
+
+	table.on( 'row-reorder', function ( e, diff, edit ) {
+		var result = '';
+
+		for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
+			var rowData = table.row( diff[i].node ).data();
+
+			result += rowData[1]+' updated to be in position '+
+				diff[i].newData+' (was '+diff[i].oldData+')<br>';
+		}
+
+		$('#result').html( 'Event result:<br>'+result );
+	} );
+} );
+
+]]>
+</js>
+
+<title lib="RowReorder">Reorder event</title>
+
+<info><![CDATA[
+
+Providing the UI to allow end users to reorder a table is only half of the story - likely you will wish to have the changes caused by the end user to effect a database or some other data store. This can be done by listening for the `rr-event row-reorder` event.
+
+This examples shows how the `rr-event row-reorder` event can be listened for and an action taken when it is triggered. In this case we simply output data about the change to the page, but a more sophisticated use case might involve using Ajax to inform a server-side about the change.
+
+An example of [Editor using RowReorder](http://editor.datatables.net/examples/advanced/rowReorder.html) making use of Editor's multi-row editing ability, is available on the Editor web-site.
+
+]]></info>
+
+<demo-html>
+	<div id="result">Event result:</div>
+</demo-html>
+
+</dt-example>
+
