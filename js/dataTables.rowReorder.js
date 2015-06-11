@@ -28,7 +28,19 @@ var factory = function( $, DataTable ) {
 "use strict";
 
 /**
+ * RowReorder provides the ability in DataTables to click and drag rows to
+ * reorder them. When a row is dropped the data for the rows effected will be
+ * updated to reflect the change. Normally this data point should also be the
+ * column being sorted upon in the DataTable but this does not need to be the
+ * case. RowReorder implements a "data swap" method - so the rows being
+ * reordered take the value of the data point from the row that used to occupy
+ * the row's new position.
  *
+ * Initialisation is done by either:
+ *
+ * * `rowReorder` parameter in the DataTable initialisation object
+ * * `new $.fn.dataTable.RowReorder( table, opts )` after DataTables
+ *   initialisation.
  * 
  *  @class
  *  @param {object} settings DataTables settings object for the host table
@@ -39,29 +51,56 @@ var factory = function( $, DataTable ) {
 var RowReorder = function ( settings, opts ) {
 	// Sanity check that we are using DataTables 1.10 or newer
 	if ( ! DataTable.versionCheck || ! DataTable.versionCheck( '1.10.8' ) ) {
-		throw 'DataTables Responsive requires DataTables 1.10.8 or newer';
+		throw 'DataTables RowReorder requires DataTables 1.10.8 or newer';
 	}
 
+	// User and defaults configuration object
 	this.c = $.extend( true, {},
 		DataTable.defaults.rowReorder,
 		RowReorder.defaults,
 		opts
 	);
 
+	// Internal settings
 	this.s = {
+		/** @type {integer} Scroll body top cache */
+		bodyTop: null,
+
+		/** @type {DataTable.Api} DataTables' API instance */
 		dt: new DataTable.Api( settings ),
-		columns: [],
+
+		/** @type {function} Data fetch function */
 		getDataFn: DataTable.ext.oApi._fnGetObjectDataFn( this.c.dataSrc ),
-		setDataFn: DataTable.ext.oApi._fnSetObjectDataFn( this.c.dataSrc )
+
+		/** @type {array} Pixel positions for row insertion calculation */
+		middles: null,
+
+		/** @type {function} Data set function */
+		setDataFn: DataTable.ext.oApi._fnSetObjectDataFn( this.c.dataSrc ),
+
+		/** @type {Object} Mouse down information */
+		start: {
+			top: 0,
+			left: 0,
+			offsetTop: 0,
+			offsetLeft: 0,
+			nodes: []
+		},
+
+		/** @type {integer} Window height cached value */
+		windowHeight: 0
 	};
 
+	// DOM items
 	this.dom = {
+		/** @type {jQuery} Cloned row being moved around */
 		clone: null
 	};
 
-	// Check if responsive has already been initialised on this table
-	if ( this.s.dt.settings()[0].rowreorder ) {
-		return;
+	// Check if row reorder has already been initialised on this table
+	var exisiting = this.s.dt.settings()[0].rowreorder;
+	if ( exisiting ) {
+		return exisiting;
 	}
 
 	// details is an object, but for simplicity the user can give it as a string
@@ -73,13 +112,14 @@ var RowReorder = function ( settings, opts ) {
 	this._constructor();
 };
 
+
 RowReorder.prototype = {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Constructor
 	 */
 
 	/**
-	 * Initialise the Responsive instance
+	 * Initialise the RowReorder instance
 	 *
 	 * @private
 	 */
@@ -87,10 +127,11 @@ RowReorder.prototype = {
 	{
 		var that = this;
 		var dt = this.s.dt;
-		var body = $( dt.table().node() );
+		var table = $( dt.table().node() );
 
-		if ( body.css('position') === 'static' ) {
-			body.css( 'position', 'relative' );
+		// Need to be able to calculate the row positions relative to the table
+		if ( table.css('position') === 'static' ) {
+			table.css( 'position', 'relative' );
 		}
 
 		// listen for mouse down on the target column - we have to implement
@@ -98,7 +139,7 @@ RowReorder.prototype = {
 		// appear to work on table rows at this time. Also mobile browsers are
 		// not supported
 		// xxx touchstart
-		$( body ).on( 'mousedown.rowReorder', this.c.selector, function (e) {
+		$( table ).on( 'mousedown.rowReorder', this.c.selector, function (e) {
 			var tr = $(this).closest('tr');
 
 			// Double check that it is a DataTable row
@@ -107,18 +148,9 @@ RowReorder.prototype = {
 				return false;
 			}
 		} );
-		// 
-		// data update - update a column or data property
-		// use a replacement method - so the row replacing the other gets the
-		// other's data. Little more complicated, a lot more versatile
-		// indexes are then an implementation detail (Editor - delete and add
-		// could be fun - can do it in SQL with an event? should be possible)
-		// 
-		// on drop, emit an event with the new data in an object with row ids as
-		// the properties
 
 		dt.on( 'destroy', function () {
-			body.off( '.rowReorder' );
+			table.off( 'mousedown.rowReorder' );
 		} );
 	},
 
@@ -127,6 +159,12 @@ RowReorder.prototype = {
 	 * Private methods
 	 */
 	
+	/**
+	 * Cache the measurements that RowReorder needs in the mouse move handler
+	 * to attempt to speed things up, rather than reading from the DOM.
+	 *
+	 * @private
+	 */
 	_cachePositions: function ()
 	{
 		var dt = this.s.dt;
@@ -156,6 +194,12 @@ RowReorder.prototype = {
 	},
 
 
+	/**
+	 * Clone a row so it can be floated around the screen
+	 *
+	 * @param  {jQuery} target Node to be cloned
+	 * @private
+	 */
 	_clone: function ( target )
 	{
 		var dt = this.s.dt;
@@ -186,31 +230,44 @@ RowReorder.prototype = {
 	},
 
 
+	/**
+	 * Update the cloned item's position in the document
+	 *
+	 * @param  {object} e Event giving the mouse's position
+	 * @private
+	 */
 	_clonePosition: function ( e )
 	{
-		var topDiff = e.pageY - this.s.startTop;
-		var leftDiff = e.pageX - this.s.startLeft;
-		var startOffsetLeft = this.s.startOffsetLeft;
+		var start = this.s.start;
+		var topDiff = e.pageY - start.top;
+		var leftDiff = e.pageX - start.left;
 		var snap = this.c.snapX;
 		var left;
 
 		if ( snap === true ) {
-			left = startOffsetLeft;
+			left = start.offsetLeft;
 		}
 		else if ( typeof snap === 'number' ) {
-			left = startOffsetLeft + snap;
+			left = start.offsetLeft + snap;
 		}
 		else {
-			left = leftDiff + startOffsetLeft;
+			left = leftDiff + start.offsetLeft;
 		}
 
 		this.dom.clone.css( {
-			top: topDiff + this.s.startOffsetTop,
+			top: topDiff + start.offsetTop,
 			left: left
 		} );
 	},
 
 
+	/**
+	 * Emit an event on the DataTable for listeners
+	 *
+	 * @param  {string} name Event name
+	 * @param  {array} args Event arguments
+	 * @private
+	 */
 	_emitEvent: function ( name, args )
 	{
 		this.s.dt.iterator( 'table', function ( ctx, i ) {
@@ -219,17 +276,26 @@ RowReorder.prototype = {
 	},
 
 
-	_mouseDown: function ( e, target  )
+	/**
+	 * Mouse down event handler. Read initial positions and add event handlers
+	 * for the move.
+	 *
+	 * @param  {object} e      Mouse event
+	 * @param  {jQuery} target TR element that is to be moved
+	 * @private
+	 */
+	_mouseDown: function ( e, target )
 	{
 		var that = this;
 		var dt = this.s.dt;
+		var start = this.s.start;
 
 		var offset = target.offset();
-		this.s.startTop = e.pageY;
-		this.s.startLeft = e.pageX;
-		this.s.startOffsetTop = offset.top;
-		this.s.startOffsetLeft = offset.left;
-		this.s.startNodes = $.unique( dt.rows( { page: 'current' } ).nodes().toArray() );
+		start.top = e.pageY;
+		start.left = e.pageX;
+		start.offsetTop = offset.top;
+		start.offsetLeft = offset.left;
+		start.nodes = $.unique( dt.rows( { page: 'current' } ).nodes().toArray() );
 
 		this._cachePositions();
 		this._clone( target );
@@ -253,7 +319,15 @@ RowReorder.prototype = {
 		}
 	},
 
-	_mouseMove: function (e)
+
+	/**
+	 * Mouse move event handler - move the cloned row and shuffle the table's
+	 * rows if required.
+	 *
+	 * @param  {object} e Mouse event
+	 * @private
+	 */
+	_mouseMove: function ( e )
 	{
 		this._clonePosition( e );
 
@@ -264,6 +338,8 @@ RowReorder.prototype = {
 		var dt = this.s.dt;
 		var body = dt.table().body();
 
+		// Determine where the row should be inserted based on the mouse
+		// position
 		for ( var i=0, ien=middles.length ; i<ien ; i++ ) {
 			if ( bodyY < middles[i] ) {
 				insertPoint = i;
@@ -275,6 +351,7 @@ RowReorder.prototype = {
 			insertPoint = middles.length;
 		}
 
+		// Perform the DOM shuffle if it has changed from last time
 		if ( this.s.lastInsert === null || this.s.lastInsert !== insertPoint ) {
 			if ( insertPoint === 0 ) {
 				this.dom.target.prependTo( body );
@@ -319,7 +396,15 @@ RowReorder.prototype = {
 		}
 	},
 
-	_mouseUp: function (e)
+
+	/**
+	 * Mouse up event handler - release the event handlers and perform the
+	 * table updates
+	 *
+	 * @param  {object} e Mouse event
+	 * @private
+	 */
+	_mouseUp: function ( e )
 	{
 		var dt = this.s.dt;
 		var i, ien;
@@ -334,21 +419,22 @@ RowReorder.prototype = {
 		$(document.body).removeClass( 'dt-rowReorder-noOverflow' );
 
 		// Calculate the difference
-		var startNodes = this.s.startNodes;
+		var startNodes = this.s.start.nodes;
 		var endNodes = $.unique( dt.rows( { page: 'current' } ).nodes().toArray() );
 		var idDiff = {};
 		var fullDiff = [];
+		var diffNodes = [];
 		var getDataFn = this.s.getDataFn;
 		var setDataFn = this.s.setDataFn;
 
 		for ( i=0, ien=startNodes.length ; i<ien ; i++ ) {
 			if ( startNodes[i] !== endNodes[i] ) {
-				var id = dt.row( startNodes[i] ).id();
+				var id = dt.row( endNodes[i] ).id();
 				var endRowData = dt.row( endNodes[i] ).data();
 				var startRowData = dt.row( startNodes[i] ).data();
 
 				if ( id ) {
-					idDiff[ id ] = getDataFn( endRowData );
+					idDiff[ id ] = getDataFn( startRowData );
 				}
 
 				fullDiff.push( {
@@ -358,12 +444,17 @@ RowReorder.prototype = {
 					newPosition: i,
 					oldPosition: $.inArray( endNodes[i], startNodes )
 				} );
+
+				diffNodes.push( endNodes[i] );
 			}
 		}
 		
 		// Emit event
-		this._emitEvent( 'row-reorder', [ fullDiff, idDiff ] );
-		
+		this._emitEvent( 'row-reorder', [ fullDiff, {
+			dataSrc: this.c.dataSrc,
+			nodes: diffNodes,
+			values: idDiff
+		} ] );
 
 		// Do update if required
 		if ( this.c.update ) {
@@ -384,38 +475,51 @@ RowReorder.prototype = {
 
 
 /**
- * Responsive default settings for initialisation
+ * RowReorder default settings for initialisation
  *
  * @namespace
- * @name Responsive.defaults
+ * @name RowReorder.defaults
  * @static
  */
 RowReorder.defaults = {
+	/**
+	 * Data point in the host row's data source object for where to get and set
+	 * the data to reorder. This will normally also be the sorting column.
+	 *
+	 * @type {Number}
+	 */
+	dataSrc: 0,
+
+	/**
+	 * Drag handle selector. This defines the element that when dragged will
+	 * reorder a row.
+	 *
+	 * @type {String}
+	 */
 	selector: 'td:first-child',
 
+	/**
+	 * Optionally lock the dragged row's x-position. This can be `true` to
+	 * fix the position match the host table's, `false` to allow free movement
+	 * of the row, or a number to define an offset from the host table.
+	 *
+	 * @type {Boolean|number}
+	 */
 	snapX: false,
 
-	update: true,
-
-	dataSrc: 0
+	/**
+	 * Update the table's data on drop
+	 *
+	 * @type {Boolean}
+	 */
+	update: true
 };
-
-
-/*
- * API
- */
-var Api = $.fn.dataTable.Api;
-
-// Doesn't do anything - work around for a bug in DT... Not documented
-Api.register( 'responsive()', function () {
-	return this;
-} );
 
 
 /**
  * Version information
  *
- * @name Responsive.version
+ * @name RowReorder.version
  * @static
  */
 RowReorder.version = '1.0.0';

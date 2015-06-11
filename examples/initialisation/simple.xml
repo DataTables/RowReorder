@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html" table-class="display" order="1">
+<dt-example table-type="sequence" table-class="display" order="1">
 
 <css lib="datatables rowreorder" />
 <js lib="jquery datatables rowreorder">
@@ -8,10 +8,6 @@
 $(document).ready(function() {
 	var table = $('#example').DataTable( {
 		rowReorder: true
-	} );
-
-	table.on( 'row-reorder', function ( e, full, id ) {
-		console.log( e, full, id );
 	} );
 } );
 
