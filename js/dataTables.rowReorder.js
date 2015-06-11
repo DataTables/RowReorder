@@ -139,7 +139,7 @@ RowReorder.prototype = {
 		// appear to work on table rows at this time. Also mobile browsers are
 		// not supported
 		// xxx touchstart
-		$( table ).on( 'mousedown.rowReorder', this.c.selector, function (e) {
+		$( table ).on( 'mousedown.rowReorder touchstart.rowReorder', this.c.selector, function (e) {
 			var tr = $(this).closest('tr');
 
 			// Double check that it is a DataTable row
@@ -239,8 +239,8 @@ RowReorder.prototype = {
 	_clonePosition: function ( e )
 	{
 		var start = this.s.start;
-		var topDiff = e.pageY - start.top;
-		var leftDiff = e.pageX - start.left;
+		var topDiff = this._eventToPage( e, 'Y' ) - start.top;
+		var leftDiff = this._eventToPage( e, 'X' ) - start.left;
 		var snap = this.c.snapX;
 		var left;
 
@@ -277,6 +277,24 @@ RowReorder.prototype = {
 
 
 	/**
+	 * Get pageX/Y position from an event, regardless of if it is a mouse or
+	 * touch event.
+	 *
+	 * @param  {object} e Event
+	 * @param  {string} pos X or Y (must be a capital)
+	 * @private
+	 */
+	_eventToPage: function ( e, pos )
+	{
+		if ( e.type.indexOf( 'touch' ) !== -1 ) {
+			return e.originalEvent.touches[0][ 'page'+pos ];
+		}
+
+		return e[ 'page'+pos ];
+	},
+
+
+	/**
 	 * Mouse down event handler. Read initial positions and add event handlers
 	 * for the move.
 	 *
@@ -291,8 +309,8 @@ RowReorder.prototype = {
 		var start = this.s.start;
 
 		var offset = target.offset();
-		start.top = e.pageY;
-		start.left = e.pageX;
+		start.top = this._eventToPage( e, 'Y' );
+		start.left = this._eventToPage( e, 'X' );
 		start.offsetTop = offset.top;
 		start.offsetLeft = offset.left;
 		start.nodes = $.unique( dt.rows( { page: 'current' } ).nodes().toArray() );
@@ -305,10 +323,10 @@ RowReorder.prototype = {
 		target.addClass( 'dt-rowReorder-moving' );
 
 		$( document )
-			.on( 'mouseup.rowReorder', function (e) {
+			.on( 'mouseup.rowReorder touchend.rowReorder', function (e) {
 				that._mouseUp(e);
 			} )
-			.on( 'mousemove.rowReorder', function (e) {
+			.on( 'mousemove.rowReorder touchmove.rowReorder', function (e) {
 				that._mouseMove(e);
 			} );
 
@@ -332,7 +350,7 @@ RowReorder.prototype = {
 		this._clonePosition( e );
 
 		// Transform the mouse position into a position in the table's body
-		var bodyY = e.pageY - this.s.bodyTop;
+		var bodyY = this._eventToPage( e, 'Y' ) - this.s.bodyTop;
 		var middles = this.s.middles;
 		var insertPoint = null;
 		var dt = this.s.dt;
@@ -373,7 +391,7 @@ RowReorder.prototype = {
 		}
 
 		// scroll window up and down when reaching the edges
-		var windowY = e.pageY - document.body.scrollTop;
+		var windowY = this._eventToPage( e, 'Y' ) - document.body.scrollTop;
 		var scrollInterval = this.s.scrollInterval;
 
 		if ( windowY < 65 ) {
@@ -415,7 +433,7 @@ RowReorder.prototype = {
 		this.dom.target.removeClass( 'dt-rowReorder-moving' );
 		//this.dom.target = null;
 
-		$(document).off( 'mouseup.rowReorder mousemove.rowReorder' );
+		$(document).off( '.rowReorder' );
 		$(document.body).removeClass( 'dt-rowReorder-noOverflow' );
 
 		// Calculate the difference

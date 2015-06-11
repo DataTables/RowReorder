@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="sequence" table-class="display" order="1">
+
+<css lib="datatables rowreorder responsive" />
+<js lib="jquery datatables rowreorder responsive">
+<![CDATA[
+
+$(document).ready(function() {
+	var table = $('#example').DataTable( {
+		rowReorder: {
+			selector: 'td:nth-child(2)'
+		},
+		responsive: true
+	} );
+} );
+
+]]>
+</js>
+
+<title lib="RowReorder">Mobile support (Responsive integration)</title>
+
+<info><![CDATA[
+
+
+
+]]></info>
+
+</dt-example>
+
