@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="sequence" table-class="display" order="6">
+
+<css lib="datatables rowreorder" />
+<js lib="jquery datatables rowreorder">
+<![CDATA[
+
+// Set the RowReorder defaults
+$.extend(
+	$.fn.dataTable.RowReorder.defaults,
+	{ selector: 'tr' }
+);
+
+// Enable RowReorder by default
+$.fn.dataTable.defaults.rowReorder = true;
+
+$(document).ready( function() {
+	$('#example').DataTable();
+} );
+
+]]>
+</js>
+
+<title lib="RowReorder">Defaults</title>
+
+<info><![CDATA[
+
+Being able to configure default values for RowReorder and enable it by default on DataTables can be quite useful. Defaults for RowReorder can be configured on the `$.fn.dataTable.RowReorder.defaults` object or `$.fn.dataTable.defaults.rowReorder`.
+
+This example shows both being used, with RowReorder being configured to use the whole row as a selector.
+
+]]></info>
+
+</dt-example>
+

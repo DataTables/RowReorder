@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option group="rowReorder">
+	<name>rowReorder.dataSrc</name>
+	<summary>Configure the data point that will be used for the reordering data</summary>
+
+	<type type="integer">
+		<description>
+			Array index for when DataTables stores row data in arrays. Use this option if you **do not** set `dt-init columns.data` for your column.
+		</description>
+	</type>
+
+	<type type="object">
+		<description>
+			Object property for when DataTables stores row data in objects. Use this option if you **do** set `dt-init columns.data` for your column. Like `dt-init columns.data` this option can be used with nested JSON data using dotted Javascript notation - this can be particularly useful for working with tables where the data is sourced from joined SQL tables.
+		</description>
+	</type>
+
+	<default value="0">
+		Array index 0.
+	</default>
+
+	<description>
+		When rows are reordered, RowReorder will automatically adjust the data in the DataTable to reflect the change made by the reordering. This option tells RowReorder what data property in the data source object / array for each row (see `dt-api row().data()`) should be read and set.
+
+		Typically this option will be used to point to a column with a sequence number that defines an order. However, this need not be the case - any property in the data source object can be used, even one that is not used in a DataTables column.
+	</description>
+
+	<example title="Enable RowReorder and set the `dataSrc` to the object property `sequence`"><![CDATA[
+
+$('#example').DataTable( {
+	rowReorder: {
+		dataSrc: 'sequence'
+	}
+} );
+
+]]></example>
+
+	<example title="Use nested data with a data source"><![CDATA[
+
+$('#example').DataTable( {
+	rowReorder: {
+		dataSrc: 'race.order'
+	}
+} );
+
+]]></example>
+
+</dt-option>

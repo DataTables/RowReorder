@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option group="rowReorder">
+	<name>rowReorder.update</name>
+	<summary>Control automatic of data when a row is dropped</summary>
+
+	<type type="boolean">
+		<description>
+			* `true` - DataTables data is automatically updated as a result of the row reordering and the table redrawn.
+			* `false` - No data update or draw is performed.
+		</description>
+	</type>
+
+	<default value="true">
+		Data is updated and table redrawn
+	</default>
+
+	<description>
+		At the end of a row reordering action you will typically wish to take some action to reflect the change from the reordering action. By default RowReorder will read the data from the reordered rows and update that same data based on the row's new position in the table. It will then redraw the table to account for any changes in ordering.
+
+		This action is not always desirable, particularly if you are using server-side processing or which to have an external process update the data. In such circumstances this option can be used to disable the automatic data update and draw. The `rr-event row-reorder` event can then be used to determine what actions should be taken based on the reordered rows.
+	</description>
+
+	<example title="Disable data update."><![CDATA[
+
+$('#example').DataTable( {
+	rowReorder: {
+		update: false
+	}
+} );
+
+]]></example>
+
+</dt-option>

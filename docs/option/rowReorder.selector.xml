@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option group="rowReorder">
+	<name>rowReorder.selector</name>
+	<summary>Define the selector used to pick the elements that will start a drag</summary>
+
+	<type type="string">
+		<description>
+			[jQuery selector](https://api.jquery.com/category/selectors/) to select which element will be used as the drag start handle.
+		</description>
+	</type>
+
+	<default value="td:first-child">
+		First visible cell in the table
+	</default>
+
+	<description>
+		In order to be able to start a row drag and drop reorder, the user needs to be able to click and drag an element in the row. This option defines what element in the table row performs that option.
+
+		The value of this option can take any [jQuery selector](https://api.jquery.com/category/selectors/), providing the option to provide potentially complex selection options, but typically you will wish to select either a specific cell (the default value is to select the first visible cell in the table), the whole row or a specific _button_ in the table that is styles to appear as a drag start handle to the end user.
+	</description>
+
+	<example title="Enable RowReorder and the drag handle to be the last cell in the row"><![CDATA[
+
+$('#example').DataTable( {
+	rowReorder: {
+		selector: 'td:last-child'
+	}
+} );
+
+]]></example>
+
+	<example title="Use a span element in the row - this could be styled to look like a drag handle"><![CDATA[
+
+$('#example').DataTable( {
+	rowReorder: {
+		selector: 'span.reorder'
+	}
+} );
+
+]]></example>
+
+	<example title="Use the whole row as the drag start handle"><![CDATA[
+
+$('#example').DataTable( {
+	rowReorder: {
+		selector: 'tr'
+	}
+} );
+
+]]></example>
+
+</dt-option>

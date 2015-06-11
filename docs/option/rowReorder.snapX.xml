@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option group="rowReorder">
+	<name>rowReorder.snapX</name>
+	<summary>Horizontal position control of the row being dragged</summary>
+
+	<type type="boolean">
+		<description>
+			* `true` - the dragged row follows the mouse only vertically. It is locked to the left of the table horizontally.
+			* `false` - the dragged row follows the mouse both horizontally and vertically
+		</description>
+	</type>
+
+	<type type="integer">
+		<description>
+			Offset from the left of the table that the horizontal position is locked to. This can be a positive number (offset to the right) or a negative number (offset to the left).
+		</description>
+	</type>
+
+	<default value="false">
+		Dragged row follows the mouse both horizontally and vertically
+	</default>
+
+	<description>
+		When RowReorder starts a drag, it clones the original target row and the clone is moved with the mouse, giving the end user visual feedback about the drag action.
+
+		By default the cloned row will be moved with the mouse both horizontally and vertically. However, only the virtual position is particularly important and it can be nice to lock the row to the host table vertically. This option provides that ability.
+	</description>
+
+	<example title="Fix the floating row to the table horizontally."><![CDATA[
+
+$('#example').DataTable( {
+	rowReorder: {
+		snapX: true
+	}
+} );
+
+]]></example>
+
+	<example title="Use a -5 pixel offset for the dragged row"><![CDATA[
+
+$('#example').DataTable( {
+	rowReorder: {
+		snapX: -5
+	}
+} );
+
+]]></example>
+
+</dt-option>

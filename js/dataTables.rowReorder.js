@@ -470,8 +470,8 @@ RowReorder.prototype = {
 		// Emit event
 		this._emitEvent( 'row-reorder', [ fullDiff, {
 			dataSrc: this.c.dataSrc,
-			nodes: diffNodes,
-			values: idDiff
+			nodes:   diffNodes,
+			values:  idDiff
 		} ] );
 
 		// Do update if required
@@ -485,7 +485,7 @@ RowReorder.prototype = {
 				row.invalidate( 'data' );
 			}
 
-			dt.draw();
+			dt.draw( false );
 		}
 	}
 };
