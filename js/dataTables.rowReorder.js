@@ -1,5 +1,5 @@
 /*! RowReorder 1.0.0
- * 2014-2015 SpryMedia Ltd - datatables.net/license
+ * 2015 SpryMedia Ltd - datatables.net/license
  */
 
 /**
@@ -48,7 +48,7 @@ var factory = function( $, DataTable ) {
  *  @requires jQuery 1.7+
  *  @requires DataTables 1.10.7+
  */
-var RowReorder = function ( settings, opts ) {
+var RowReorder = function ( dt, opts ) {
 	// Sanity check that we are using DataTables 1.10 or newer
 	if ( ! DataTable.versionCheck || ! DataTable.versionCheck( '1.10.8' ) ) {
 		throw 'DataTables RowReorder requires DataTables 1.10.8 or newer';
@@ -67,7 +67,7 @@ var RowReorder = function ( settings, opts ) {
 		bodyTop: null,
 
 		/** @type {DataTable.Api} DataTables' API instance */
-		dt: new DataTable.Api( settings ),
+		dt: new DataTable.Api( dt ),
 
 		/** @type {function} Data fetch function */
 		getDataFn: DataTable.ext.oApi._fnGetObjectDataFn( this.c.dataSrc ),
@@ -98,14 +98,10 @@ var RowReorder = function ( settings, opts ) {
 	};
 
 	// Check if row reorder has already been initialised on this table
-	var exisiting = this.s.dt.settings()[0].rowreorder;
+	var settings = this.s.dt.settings()[0];
+	var exisiting = settings.rowreorder;
 	if ( exisiting ) {
 		return exisiting;
-	}
-
-	// details is an object, but for simplicity the user can give it as a string
-	if ( opts && typeof opts.details === 'string' ) {
-		opts.details = { type: opts.details };
 	}
 
 	settings.rowreorder = this;
@@ -271,7 +267,7 @@ RowReorder.prototype = {
 	_emitEvent: function ( name, args )
 	{
 		this.s.dt.iterator( 'table', function ( ctx, i ) {
-			$(ctx.nTable).triggerHandler( name, args );
+			$(ctx.nTable).triggerHandler( name+'.dt', args );
 		} );
 	},
 
@@ -474,6 +470,16 @@ RowReorder.prototype = {
 			values:  idDiff
 		} ] );
 
+		// Editor interface
+		if ( this.c.editor ) {
+			this.c.editor
+				.edit( diffNodes, false, {
+					submit: 'changed'
+				} )
+				.multiSet( this.c.dataSrc, idDiff )
+				.submit();
+		}
+
 		// Do update if required
 		if ( this.c.update ) {
 			for ( i=0, ien=fullDiff.length ; i<ien ; i++ ) {
@@ -507,6 +513,13 @@ RowReorder.defaults = {
 	 * @type {Number}
 	 */
 	dataSrc: 0,
+
+	/**
+	 * Editor instance that will be used to perform the update
+	 *
+	 * @type {DataTable.Editor}
+	 */
+	editor: null,
 
 	/**
 	 * Drag handle selector. This defines the element that when dragged will
