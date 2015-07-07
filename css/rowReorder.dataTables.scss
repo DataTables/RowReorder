@@ -7,10 +7,12 @@ table.dt-rowReorder-float {
 	opacity: 0.8;
 	table-layout: static;
 	outline: $move-outline;
+	outline-offset: -2px;
 }
 
 tr.dt-rowReorder-moving {
 	outline: $moved-outline;
+	outline-offset: -2px;
 }
 
 body.dt-rowReorder-noOverflow {
