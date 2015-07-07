@@ -14,9 +14,6 @@ DT_BUILT="${DT_SRC}/built/DataTables"
 rsync -r css $OUT_DIR
 css_frameworks rowReorder $OUT_DIR/css
 
-# Copy images
-#rsync -r images $OUT_DIR
-
 # Copy JS
 rsync -r js $OUT_DIR
 js_compress $OUT_DIR/js/dataTables.rowReorder.js
