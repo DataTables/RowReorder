@@ -134,7 +134,6 @@ RowReorder.prototype = {
 		// this rather than using HTML5 drag and drop as drag and drop doesn't
 		// appear to work on table rows at this time. Also mobile browsers are
 		// not supported
-		// xxx touchstart
 		$( table ).on( 'mousedown.rowReorder touchstart.rowReorder', this.c.selector, function (e) {
 			var tr = $(this).closest('tr');
 
