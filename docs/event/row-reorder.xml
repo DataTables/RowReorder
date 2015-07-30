@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-event>
+<dt-event group="rowreorder">
 	<name>row-reorder</name>
 	<summary>Rows have been reordered by the end user</summary>
 	<since>1.0.0</since>
