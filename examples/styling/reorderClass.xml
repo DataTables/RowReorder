@@ -22,7 +22,7 @@ $(document).ready(function() {
 
 <info><![CDATA[
 
-The RowReorder stylesheets provide a `-string reorder` class that can be applied to the column that will start row reordering (done with the `dt-init columns.className` option).
+The RowReorder stylesheets provide a `-string reorder` class that can be applied to the column that will start row reordering (done with the `dt-init columns.className` option), giving a visual indicator to the end user that this is the drag handle (a move cursor).
 
 This example shows that in action on the first column in the table.
 

@@ -18,11 +18,11 @@ $(document).ready(function() {
 ]]>
 </js>
 
-<title lib="RowReorder">Restricted ordering</title>
+<title lib="RowReorder">Restricted column ordering</title>
 
 <info><![CDATA[
 
-This example shows the same information as the [simple example](simple.html), but in this case restricts the ordering that can be applied to the table to just the sequence number column. Generally this will be the configuration that RowReorder will be used in, as ordering by other columns can make the reordering potentially quite confusing for the end user.
+This example shows the same information as the [simple example](simple.html), but in this case restricts the column ordering that can be applied to the table to just the sequence number column. Generally this will be the configuration that RowReorder will be used in, as ordering by other columns can make the reordering potentially quite confusing for the end user.
 
 The restriction to the first column only for ordering is applied through the `dt-init columnDefs` option and `dt-init columns.orderable`. The `dt-init columnDefs` are applied in descending priority order, so the first entry overrides the second for the first column.
 

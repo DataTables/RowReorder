@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="sequence" table-class="display" order="3">
+<dt-example table-type="sequence" table-class="display nowrap" order="3">
 
 <css lib="datatables rowreorder responsive" />
 <js lib="jquery datatables rowreorder responsive">
@@ -22,6 +22,8 @@ $(document).ready(function() {
 <info><![CDATA[
 
 This example shows RowReorder being used with the Responsive extension for DataTables and also that it provides support for touch inputs to perform a row reorder. Responsive is particularly useful with mobile devices, but can also be useful on desktops where complex data sets are shown in the DataTable.
+
+Note that the row reordering in this example is triggered by dragging the cells in the second column.
 
 ]]></info>
 
