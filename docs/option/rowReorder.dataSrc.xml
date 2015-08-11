@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-option group="rowreorder">
+<dt-option library="RowReorder">
 	<name>rowReorder.dataSrc</name>
 	<summary>Configure the data point that will be used for the reordering data</summary>
 
