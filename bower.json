@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"main": [
 		"js/dataTables.rowReorder.js",
-		"css/dataTables.rowReorder.css"
+		"css/rowReorder.dataTables.scss"
 	],
 	"dependencies": {
 		"jquery": ">=1.7.0",
