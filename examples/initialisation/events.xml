@@ -42,7 +42,7 @@ Providing the UI to allow end users to reorder a table is only half of the story
 
 This examples shows how the `rr-event row-reorder` event can be listened for and an action taken when it is triggered. In this case we simply output data about the change to the page, but a more sophisticated use case might involve using Ajax to inform a server-side about the change.
 
-An example of [Editor using RowReorder](http://editor.datatables.net/examples/advanced/rowReorder.html) making use of Editor's multi-row editing ability, is available on the Editor web-site.
+An example of [Editor using RowReorder](http://editor.datatables.net/examples/extensions/rowReorder.html) making use of Editor's multi-row editing ability, is available on the Editor web-site.
 
 ]]></info>
 
