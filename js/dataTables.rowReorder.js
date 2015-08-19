@@ -215,7 +215,7 @@ RowReorder.prototype = {
 		clone
 			.width( tableWidth )
 			.height( tableHeight )
-			.zIndex( tableZIndex)
+			.zIndex( tableZIndex )
 			.find('tr').children().each( function (i) {
 				this.style.width = sizes[i]+'px';
 			} );
