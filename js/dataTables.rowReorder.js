@@ -109,7 +109,7 @@ var RowReorder = function ( dt, opts ) {
 };
 
 
-RowReorder.prototype = {
+$.extend( RowReorder.prototype, {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Constructor
 	 */
@@ -496,7 +496,7 @@ RowReorder.prototype = {
 			dt.draw( false );
 		}
 	}
-};
+} );
 
 
 
