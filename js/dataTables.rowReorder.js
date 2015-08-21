@@ -285,9 +285,7 @@ $.extend( RowReorder.prototype, {
 		for ( i=0, ien=Nodes.length ; i<ien ; i++ ) {
 
 			var rowData = dt.row( Nodes[i] ).data();
-
-			//ToDo replace with generic function call
-			rowData.feature.properties.TableOrder = i;
+			setDataFn(rowData, i);
 
 			var row = dt.row(Nodes[i]);
 			row.invalidate('data');
