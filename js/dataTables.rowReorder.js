@@ -144,7 +144,7 @@ $.extend( RowReorder.prototype, {
 			}
 		} );
 		
-		// check if sorting should reorders data
+		// check if sorting should reorder data
 		// if it should reorder, then it adds listener for sorting, and when data has been 
 		// sorted, it updates data with new row numbers.
 		if (that.c.reorderOnSort) { 
