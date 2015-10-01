@@ -207,7 +207,6 @@ $.extend( RowReorder.prototype, {
 		// to reduce reflows
 		var tableWidth = target.outerWidth();
 		var tableHeight = target.outerHeight();
-		var tableZIndex = target.zIndex();
 		var sizes = target.children().map( function () {
 			return $(this).width();
 		} );
@@ -215,7 +214,6 @@ $.extend( RowReorder.prototype, {
 		clone
 			.width( tableWidth )
 			.height( tableHeight )
-			.zIndex( tableZIndex )
 			.find('tr').children().each( function (i) {
 				this.style.width = sizes[i]+'px';
 			} );
