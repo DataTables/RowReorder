@@ -8,6 +8,7 @@ table.dt-rowReorder-float {
 	table-layout: static;
 	outline: $move-outline;
 	outline-offset: -2px;
+	z-index: 2001;
 }
 
 tr.dt-rowReorder-moving {
