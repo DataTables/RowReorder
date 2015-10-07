@@ -1,11 +1,11 @@
-/*! RowReorder 1.0.1-dev
+/*! RowReorder 1.1.0-dev
  * 2015 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     RowReorder
  * @description Row reordering extension for DataTables
- * @version     1.0.1-dev
+ * @version     1.1.0-dev
  * @file        dataTables.rowReorder.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
@@ -24,13 +24,13 @@
 (function( factory ){
 	if ( typeof define === 'function' && define.amd ) {
 		// AMD
-		define( ['jquery', 'datatables'], factory );
+		define( ['jquery', 'datatables.net'], factory );
 	}
 	else if ( typeof exports === 'object' ) {
 		// CommonJS
 		module.exports = function ($) {
 			if ( ! $ ) { $ = require('jquery'); }
-			if ( ! $.fn.dataTable ) { require('datatables')($); }
+			if ( ! $.fn.dataTable ) { require('datatables.net')($); }
 
 			factory( $ );
 		};
@@ -572,7 +572,7 @@ RowReorder.defaults = {
  * @name RowReorder.version
  * @static
  */
-RowReorder.version = '1.0.1-dev';
+RowReorder.version = '1.1.0-dev';
 
 
 $.fn.dataTable.RowReorder = RowReorder;
