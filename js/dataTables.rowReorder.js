@@ -164,7 +164,7 @@ $.extend( RowReorder.prototype, {
 		} );
 
 		dt.on( 'destroy', function () {
-			table.off( 'mousedown.rowReorder' );
+			table.off( '.rowReorder' );
 		} );
 	},
 
