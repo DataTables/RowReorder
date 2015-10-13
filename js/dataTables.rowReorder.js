@@ -163,7 +163,7 @@ $.extend( RowReorder.prototype, {
 			}
 		} );
 
-		dt.on( 'destroy', function () {
+		dt.on( 'destroy.rowReorder', function () {
 			$(dt.table().container()).off( '.rowReorder' );
 			dt.off( '.rowReorder' );
 		} );
