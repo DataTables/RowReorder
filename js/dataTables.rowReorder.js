@@ -150,8 +150,10 @@ $.extend( RowReorder.prototype, {
 		// listen for mouse down on the target column - we have to implement
 		// this rather than using HTML5 drag and drop as drag and drop doesn't
 		// appear to work on table rows at this time. Also mobile browsers are
-		// not supported
-		$( table ).on( 'mousedown.rowReorder touchstart.rowReorder', this.c.selector, function (e) {
+		// not supported.
+		// Use `table().container()` rather than just the table node for IE8 -
+		// otherwise it only works once...
+		$(dt.table().container()).on( 'mousedown.rowReorder touchstart.rowReorder', this.c.selector, function (e) {
 			var tr = $(this).closest('tr');
 
 			// Double check that it is a DataTable row
