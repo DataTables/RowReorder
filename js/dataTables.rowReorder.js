@@ -441,6 +441,7 @@ $.extend( RowReorder.prototype, {
 	{
 		var dt = this.s.dt;
 		var i, ien;
+		var dataSrc = this.c.dataSrc;
 
 		this.dom.clone.remove();
 		this.dom.clone = null;
@@ -487,7 +488,7 @@ $.extend( RowReorder.prototype, {
 		
 		// Emit event
 		this._emitEvent( 'row-reorder', [ fullDiff, {
-			dataSrc: this.c.dataSrc,
+			dataSrc: dataSrc,
 			nodes:   diffNodes,
 			values:  idDiff
 		} ] );
@@ -498,7 +499,7 @@ $.extend( RowReorder.prototype, {
 				.edit( diffNodes, false, {
 					submit: 'changed'
 				} )
-				.multiSet( this.c.dataSrc, idDiff )
+				.multiSet( dataSrc, idDiff )
 				.submit();
 		}
 
@@ -510,7 +511,12 @@ $.extend( RowReorder.prototype, {
 
 				setDataFn( rowData, fullDiff[i].newData );
 
-				row.invalidate( 'data' );
+				// Invalidate the cell that has the same data source as the dataSrc
+				dt.columns().every( function () {
+					if ( this.dataSrc() === dataSrc ) {
+						dt.cell( fullDiff[i].node, this.index() ).invalidate( 'data' );
+					}
+				} );
 			}
 
 			dt.draw( false );
