@@ -518,6 +518,13 @@ $.extend( RowReorder.prototype, {
 					}
 				} );
 			}
+			
+			// Trigger post row reorder event
+			this._emitEvent( 'post-row-reorder', [ fullDiff, {
+				dataSrc: dataSrc,
+				nodes:   diffNodes,
+				values:  idDiff
+			} ] );
 
 			dt.draw( false );
 		}
