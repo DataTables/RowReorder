@@ -495,9 +495,10 @@ $.extend( RowReorder.prototype, {
 		
 		// Emit event
 		this._emitEvent( 'row-reorder', [ fullDiff, {
-			dataSrc: dataSrc,
-			nodes:   diffNodes,
-			values:  idDiff
+			dataSrc:    dataSrc,
+			nodes:      diffNodes,
+			values:     idDiff,
+			triggerRow: dt.row( this.dom.target )
 		} ] );
 
 		// Editor interface
