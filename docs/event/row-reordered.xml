@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-event library="RowReorder">
+	<name>row-reordered</name>
+	<summary>After rows have been reordered by the end user</summary>
+	<since>1.0.0</since>
+
+	<type type="function">
+		<signature>function( e, details, edit )</signature>
+		<parameter type="object" name="e">
+			jQuery event object
+		</parameter>
+		<parameter type="array" name="details">
+			An array of change objects for the row's how have had values effected. Each object contain the following properties:
+
+			* `-type *` `newData` - The new data value for the row (data point defined by `rr-init rowReorder.dataSrc`)
+			* `-type node` `node` - The `-tag tr` element
+			* `-type integer` `newPosition` - New index in the DOM
+			* `-type *` `oldData` - The old data value for the row
+			* `-type integer` `oldPosition` - Old index in the DOM
+		</parameter>
+		<parameter type="object" name="edit">
+			This parameter provides the information required for [Editor](//editor.datatables.net) to perform a multi-row edit:
+
+			* `-type string` `dataSrc` - Data point - typically the field to be edited (defined by `rr-init rowReorder.dataSrc`)
+			* `-type array` `nodes` - The rows to be edited
+			* `-type object` `values` - The new values in a format suitable for `e-api multiSet()`.
+			* `-type DataTable.Api` `triggerRow` (Since v1.1.0) - Row API instance for the row that was used to start the reorder (i.e. the result from `dt-api row()`).
+		</parameter>
+		<scope>HTML table element</scope>
+	</type>
+
+	<description>
+		The event data is identical to the `rr-event row-reorder` event. In comparison to the `rr-event row-reorder` event, the event will be triggered after the row is dropped and after the data is updated. 
+		This event is only triggered if the `rr-init rowReorder.update` option has been enabled (which it is by default).
+
+		The data that has been changed by RowReorder is given in two different forms in the parameters for the event handler callback - one with detailed information about the individual rows, and one with data in a format suitable for [Editor's](//editor.datatables.net) multi-row editing feature.
+
+		Please note that, as with all DataTables emitted events, this event is triggered with the `dt` namespace. As such, to listen for this event, you must also use the `dt` namespace by simply appending `.dt` to your event name, or use the `dt-api on()` method to listen for the event which will automatically append this namespace.
+	</description>
+
+	<example title="Add a class to all changed rows"><![CDATA[
+
+var table = $('#example').DataTable( {
+	rowReorder: true
+} );
+
+table.on( 'row-reordered', function ( e, diff, edit ) {
+	for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
+		$(diff[i].node).addClass("reordered");
+	}
+} );
+
+]]></example>
+
+</dt-event>
