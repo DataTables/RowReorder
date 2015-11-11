@@ -24,6 +24,7 @@
 			* `-type string` `dataSrc` - Data point - typically the field to be edited (defined by `rr-init rowReorder.dataSrc`)
 			* `-type array` `nodes` - The rows to be edited
 			* `-type object` `values` - The new values in a format suitable for `e-api multiSet()`.
+			* `-type DataTable.Api` `triggerRow` (Since v1.1.0) - Row API instance for the row that was used to start the reorder (i.e. the result from `dt-api row()`).
 		</parameter>
 		<scope>HTML table element</scope>
 	</type>

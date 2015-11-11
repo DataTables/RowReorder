@@ -1,11 +1,11 @@
-/*! RowReorder 1.1.0-dev
+/*! RowReorder 1.1.0
  * 2015 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     RowReorder
  * @description Row reordering extension for DataTables
- * @version     1.1.0-dev
+ * @version     1.1.0
  * @file        dataTables.rowReorder.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
@@ -24,22 +24,29 @@
 (function( factory ){
 	if ( typeof define === 'function' && define.amd ) {
 		// AMD
-		define( ['jquery', 'datatables.net'], factory );
+		define( ['jquery', 'datatables.net'], function ( $ ) {
+			return factory( $, window, document );
+		} );
 	}
 	else if ( typeof exports === 'object' ) {
 		// CommonJS
-		module.exports = function ($) {
-			if ( ! $ ) { $ = require('jquery'); }
-			if ( ! $.fn.dataTable ) { require('datatables.net')($); }
+		module.exports = function (root, $) {
+			if ( ! root ) {
+				root = window;
+			}
 
-			factory( $ );
+			if ( ! $ || ! $.fn.dataTable ) {
+				$ = require('datatables.net')(root, $).$;
+			}
+
+			return factory( $, root, root.document );
 		};
 	}
 	else {
 		// Browser
-		factory( jQuery );
+		factory( jQuery, window, document );
 	}
-}(function( $ ) {
+}(function( $, window, document, undefined ) {
 'use strict';
 var DataTable = $.fn.dataTable;
 
@@ -488,9 +495,10 @@ $.extend( RowReorder.prototype, {
 		
 		// Create event args
 		var eventArgs = [ fullDiff, {
-			dataSrc: dataSrc,
-			nodes:   diffNodes,
-			values:  idDiff
+			dataSrc:    dataSrc,
+			nodes:      diffNodes,
+			values:     idDiff,
+			triggerRow: dt.row( this.dom.target )
 		} ];
 		
 		// Emit event
@@ -587,7 +595,7 @@ RowReorder.defaults = {
  * @name RowReorder.version
  * @static
  */
-RowReorder.version = '1.1.0-dev';
+RowReorder.version = '1.1.0';
 
 
 $.fn.dataTable.RowReorder = RowReorder;

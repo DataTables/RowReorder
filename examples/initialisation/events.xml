@@ -18,7 +18,7 @@ $(document).ready(function() {
 	} );
 
 	table.on( 'row-reorder', function ( e, diff, edit ) {
-		var result = '';
+		var result = 'Reorder started on row: '+edit.triggerRow.data()[1]+'<br>';
 
 		for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
 			var rowData = table.row( diff[i].node ).data();
