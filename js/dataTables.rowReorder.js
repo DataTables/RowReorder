@@ -494,13 +494,16 @@ $.extend( RowReorder.prototype, {
 			}
 		}
 		
-		// Emit event
-		this._emitEvent( 'row-reorder', [ fullDiff, {
+		// Create event args
+		var eventArgs = [ fullDiff, {
 			dataSrc:    dataSrc,
 			nodes:      diffNodes,
 			values:     idDiff,
 			triggerRow: dt.row( this.dom.target )
-		} ] );
+		} ];
+		
+		// Emit event
+		this._emitEvent( 'row-reorder', eventArgs );
 
 		// Editor interface
 		if ( this.c.editor ) {
@@ -527,6 +530,9 @@ $.extend( RowReorder.prototype, {
 					}
 				} );
 			}
+			
+			// Trigger row reordered event
+			this._emitEvent( 'row-reordered', eventArgs );
 
 			dt.draw( false );
 		}
