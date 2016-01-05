@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="sequence" table-class="display" order="6">
+
+<css lib="datatables rowreorder" />
+<js lib="jquery datatables rowreorder">
+<![CDATA[
+
+$(document).ready(function() {
+	var table = $('#example').DataTable( {
+		rowReorder: true,
+		scrollY: 300,
+		paging: false
+	} );
+} );
+
+]]>
+</js>
+
+<title lib="RowReorder">DataTables Scrolling</title>
+
+<info><![CDATA[
+
+This example is used to show RowReorder's support for DataTables `dt-init scrollY` feature. As the dragged row approaches the boundary of the table, the table will start to scroll.
+
+]]></info>
+
+</dt-example>
+
