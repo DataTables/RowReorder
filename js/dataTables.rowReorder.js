@@ -422,10 +422,10 @@ $.extend( RowReorder.prototype, {
 				var nodes = $.unique( dt.rows( { page: 'current' } ).nodes().toArray() );
 
 				if ( insertPoint > this.s.lastInsert ) {
-					this.dom.target.before( nodes[ insertPoint-1 ] );
+					this.dom.target.insertAfter( nodes[ insertPoint-1 ] );
 				}
 				else {
-					this.dom.target.after( nodes[ insertPoint ] );
+					this.dom.target.insertBefore( nodes[ insertPoint ] );
 				}
 			}
 
