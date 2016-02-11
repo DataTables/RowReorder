@@ -1,6 +1,5 @@
 {
 	"name": "datatables-rowreorder",
-	"version": "1.0.0",
 	"main": [
 		"js/dataTables.rowReorder.js",
 		"css/rowReorder.dataTables.scss"
