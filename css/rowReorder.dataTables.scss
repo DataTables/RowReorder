@@ -5,7 +5,7 @@ $moved-outline: 2px solid #555 !default;
 table.dt-rowReorder-float {
 	position: absolute !important;
 	opacity: 0.8;
-	table-layout: static;
+	table-layout: fixed;
 	outline: $move-outline;
 	outline-offset: -2px;
 	z-index: 2001;
