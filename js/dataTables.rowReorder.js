@@ -1,11 +1,11 @@
-/*! RowReorder 1.1.1
+/*! RowReorder 1.1.2
  * 2015-2016 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     RowReorder
  * @description Row reordering extension for DataTables
- * @version     1.1.1
+ * @version     1.1.2
  * @file        dataTables.rowReorder.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
@@ -679,7 +679,7 @@ RowReorder.defaults = {
  * @name RowReorder.version
  * @static
  */
-RowReorder.version = '1.1.1';
+RowReorder.version = '1.1.2';
 
 
 $.fn.dataTable.RowReorder = RowReorder;
