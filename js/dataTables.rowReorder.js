@@ -1,11 +1,11 @@
-/*! RowReorder 1.1.2
+/*! RowReorder 1.1.3-dev
  * 2015-2016 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     RowReorder
  * @description Row reordering extension for DataTables
- * @version     1.1.2
+ * @version     1.1.3-dev
  * @file        dataTables.rowReorder.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
@@ -508,9 +508,11 @@ $.extend( RowReorder.prototype, {
 		// Editor interface
 		if ( this.c.editor ) {
 			this.c.editor
-				.edit( diffNodes, false, {
-					submit: 'changed'
-				} )
+				.edit(
+					diffNodes,
+					false,
+					$.extend( {submit: 'changed'}, this.c.formOptions )
+				)
 				.multiSet( dataSrc, idDiff )
 				.submit();
 		}
@@ -648,6 +650,14 @@ RowReorder.defaults = {
 	editor: null,
 
 	/**
+	 * Form options to pass to Editor when submitting a change in the row order.
+	 * See the Editor `from-options` object for details of the options
+	 * available.
+	 * @type {Object}
+	 */
+	formOptions: {},
+
+	/**
 	 * Drag handle selector. This defines the element that when dragged will
 	 * reorder a row.
 	 *
@@ -679,7 +689,7 @@ RowReorder.defaults = {
  * @name RowReorder.version
  * @static
  */
-RowReorder.version = '1.1.2';
+RowReorder.version = '1.1.3-dev';
 
 
 $.fn.dataTable.RowReorder = RowReorder;

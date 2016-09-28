@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="RowReorder">
+	<name>rowReorder.formOptions</name>
+	<summary>Set the options for the Editor form when submitting data</summary>
+	<since>1.1.3</since>
+
+	<type type="object">
+		<description>
+			A form options object for Editor. Please refer to the `e-type form-options` documentation for full information on the options available for this parameter.
+		</description>
+	</type>
+
+	<default value="{}">
+		An empty object is used by default. RowReorder augments that with the option `submit: 'changed'` which can be overridden if required.
+	</default>
+
+	<description>
+		When Editor is used with RowReorder (`-init rowReorder.editor`) it will automatically submit only the changed values when rows are reordered in the table. Editor also has the option to submit the full information for the row through the `submit` parameter of the `e-type form-options` object. This parameter provides the ability to configure the `e-type form-options` used by RowReorder.
+
+		Only the `submit` parameter is likely to be useful for the `e-type form-options` object when used in RowReorder, although it is possible to set the other parameters as well.
+	</description>
+
+	<example title="Submit the full information for all changed rows."><![CDATA[
+
+$('#myTable').DataTable( {
+	rowReorder: {
+		dataSrc: 'sequence',
+		editor:  editor,
+		formOptions: {
+			submit: 'allIfChanged'
+		}
+	}
+} );
+
+]]></example>
+</dt-option>
