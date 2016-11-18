@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-api library="Responsive">
+	<name>rowReorder.enable()</name>
+	<summary>Enable / disable the user's ability to reorder rows.</summary>
+	<since>1.2.0</since>
+
+	<type type="function">
+		<signature>rowReorder.enable( [ enable ] )</signature>
+		<description>Enable, or optionally disable, the end user's ability to click and drag to reorder rows.</description>
+		<parameter type="boolean" name="enable" default="true">
+			Flag that can be used to indicate if row reordering should be enabled or disabled.
+		</parameter>
+		<returns type="DataTables.Api">DataTables API instance</returns>
+	</type>
+
+	<description>
+		It can sometimes be useful to enable and disable the end user's ability to reorder rows, for example while processing an update at the server-side. This method provides the ability to both enable (its primary use!) and disable (through an optional boolean flag) RowReorder. When disabled click and drag events will not be processed by RowReorder.
+	</description>
+
+	<example title="Enable row reordering"><![CDATA[
+
+var table = $('#example').DataTable();
+
+table.rowReorder.enable();
+
+]]></example>
+
+	<related>-init rowReorder.enable</related>
+	<related>-api rowReorder.enable()</related>
+	<related>-api rowReorder.disable()</related>
+</dt-api>

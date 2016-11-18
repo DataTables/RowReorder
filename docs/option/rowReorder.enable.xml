@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="RowReorder">
+	<name>rowReorder.enable</name>
+	<summary>Enable / disable RowReorder's user interaction</summary>
+
+	<type type="boolean">
+		<description>
+			Boolean flag to indicate if RowReorder should be enabled or not.
+		</description>
+	</type>
+
+	<default value="true">
+		RowReorder is enabled by default when the `rowReorder` property is included in the DataTables initialisation.
+	</default>
+
+	<description>
+		This option can be used to disable RowReorder's end user interaction when the DataTable is first created. It can then later be enabled using the `-api rowReorder.enable()` API method.
+	</description>
+
+	<example title="Disable RowReorder using init options (to later be enabled via the API)"><![CDATA[
+
+$('#example').DataTable( {
+	rowReorder: {
+		enable: false
+	}
+} );
+
+]]></example>
+
+	<related>-init rowReorder.enable</related>
+	<related>-api rowReorder.enable()</related>
+	<related>-api rowReorder.disable()</related>
+</dt-option>
