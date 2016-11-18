@@ -451,6 +451,7 @@ $.extend( RowReorder.prototype, {
 	 */
 	_mouseUp: function ( e )
 	{
+		var that = this;
 		var dt = this.s.dt;
 		var i, ien;
 		var dataSrc = this.c.dataSrc;
@@ -511,6 +512,9 @@ $.extend( RowReorder.prototype, {
 
 		// Editor interface
 		if ( this.c.editor ) {
+			// Disable user interaction while Editor is submitting
+			this.c.enabled = false;
+
 			this.c.editor
 				.edit(
 					diffNodes,
@@ -518,6 +522,9 @@ $.extend( RowReorder.prototype, {
 					$.extend( {submit: 'changed'}, this.c.formOptions )
 				)
 				.multiSet( dataSrc, idDiff )
+				.one( 'submitComplete', function () {
+					that.c.enabled = true;
+				} )
 				.submit();
 		}
 
