@@ -726,7 +726,14 @@ RowReorder.defaults = {
 	 *
 	 * @type {Boolean}
 	 */
-	update: true
+	update: true,
+
+	/**
+	* This mimics jQuery UI sortable placeholder. Provide a class to be applied to tr.
+	* 
+	* @type {String}
+	*/
+	placeholder: false
 };
 
 
