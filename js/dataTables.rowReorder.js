@@ -246,7 +246,11 @@ $.extend( RowReorder.prototype, {
 		// Match the table and column widths - read all sizes before setting
 		// to reduce reflows
 		var tableWidth = target.outerWidth();
-		var tableHeight = target.outerHeight();
+		var tableHeight = 0;
+		target.each(function(i,n) {
+			tableHeight += $(n).outerHeight();
+		});
+
 		var sizes = target.children().map( function () {
 			return $(this).width();
 		} );
@@ -342,6 +346,7 @@ $.extend( RowReorder.prototype, {
 		var that = this;
 		var dt = this.s.dt;
 		var start = this.s.start;
+		dt.row($(target)).select();
 
 		var offset = target.offset();
 		start.top = this._eventToPage( e, 'Y' );
@@ -350,9 +355,18 @@ $.extend( RowReorder.prototype, {
 		start.offsetLeft = offset.left;
 		start.nodes = $.unique( dt.rows( { page: 'current' } ).nodes().toArray() );
 
+	// this will obtain rows in the their sorted order, regardless of which row is actually being dragged
+		$.merge(target, target.siblings('.selected'));
+		$.uniqueSort(target);
+	//**********************************
 		this._cachePositions();
 		this._clone( target );
 		this._clonePosition( e );
+
+	// done after cloning so class doesn't get applied to it
+		if (this.c.placeholder) {
+			target.addClass( this.c.placeholder );
+		}
 
 		this.dom.target = target;
 		target.addClass( 'dt-rowReorder-moving' );
@@ -403,6 +417,7 @@ $.extend( RowReorder.prototype, {
 		var insertPoint = null;
 		var dt = this.s.dt;
 		var body = dt.table().body();
+		var nodes = $.unique( dt.rows( { page: 'current' } ).nodes().toArray() );
 
 		// Determine where the row should be inserted based on the mouse
 		// position
@@ -423,13 +438,24 @@ $.extend( RowReorder.prototype, {
 				this.dom.target.prependTo( body );
 			}
 			else {
-				var nodes = $.unique( dt.rows( { page: 'current' } ).nodes().toArray() );
-
 				if ( insertPoint > this.s.lastInsert ) {
-					this.dom.target.insertAfter( nodes[ insertPoint-1 ] );
+					var buffer = this.dom.target.length-1;
+
+					if (!nodes[ insertPoint+buffer ]) {
+						// reached end of table
+						this.dom.target.appendTo( body );
+					} else if ( $(nodes[ insertPoint ]).hasClass('dt-rowReorder-moving') ) {
+						this.dom.target.insertBefore( nodes[ insertPoint+buffer ] );
+					} else {
+						this.dom.target.insertAfter( nodes[ insertPoint+buffer-1 ] );
+					}
 				}
 				else {
-					this.dom.target.insertBefore( nodes[ insertPoint ] );
+					if ( $(nodes[ insertPoint ]).hasClass('dt-rowReorder-moving') ) {
+						// do nothing
+					} else {
+						this.dom.target.insertBefore( nodes[ insertPoint ] );
+					}
 				}
 			}
 
@@ -460,6 +486,10 @@ $.extend( RowReorder.prototype, {
 		this.dom.clone = null;
 
 		this.dom.target.removeClass( 'dt-rowReorder-moving' );
+		dt.rows( $(this.dom.target) ).deselect();
+		if (this.c.placeholder) {
+			this.dom.target.removeClass( this.c.placeholder );
+		}
 		//this.dom.target = null;
 
 		$(document).off( '.rowReorder' );
@@ -504,7 +534,7 @@ $.extend( RowReorder.prototype, {
 			dataSrc:    dataSrc,
 			nodes:      diffNodes,
 			values:     idDiff,
-			triggerRow: dt.row( this.dom.target )
+			triggerRow: dt.rows( this.dom.target )
 		} ];
 		
 		// Emit event
