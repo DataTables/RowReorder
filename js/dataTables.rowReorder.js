@@ -175,9 +175,15 @@ $.extend( RowReorder.prototype, {
 			}
 
 			var tr = $(this).closest('tr');
+			var row = dt.row( tr );
 
 			// Double check that it is a DataTable row
-			if ( dt.row( tr ).any() ) {
+			if ( row.any() ) {
+				that._emitEvent( 'pre-row-reorder', {
+					node: row.node(),
+					index: row.index()
+				} );
+
 				that._mouseDown( e, tr );
 				return false;
 			}

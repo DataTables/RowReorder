@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-event library="RowReorder">
+	<name>pre-row-reorder</name>
+	<summary>A row reordered action has been initiated by the end user.</summary>
+	<since>1.2.1</since>
+
+	<type type="function">
+		<signature>function( node, position )</signature>
+		<parameter type="node" name="node">
+			The row being reordered.
+		</parameter>
+		<parameter type="integer" name="index">
+			The index of the row being reordered. Note this is the internal index of the row, not the display position.
+		</parameter>
+		<scope>HTML table element</scope>
+	</type>
+
+	<description>
+		When using RowReorder you may wish to know when a user starts a row reorder action. This event provides that ability.
+
+		This event is triggered when a user grabs a row for reordering, before it is moved.
+
+		Please note that, as with all DataTables emitted events, this event is triggered with the `dt` namespace. As such, to listen for this event, you must also use the `dt` namespace by simply appending `.dt` to your event name, or use the `dt-api on()` method to listen for the event which will automatically append this namespace.
+	</description>
+
+	<example title="Log when row reorder action is started"><![CDATA[
+
+var table = $('#example').DataTable( {
+	rowReorder: true
+} );
+
+table.on( 'pre-row-reorder', function ( node, index ) {
+	console.log( 'Row reorder started: ', node, index );
+} );
+
+]]></example>
+
+</dt-event>
