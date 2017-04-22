@@ -625,7 +625,7 @@ $.extend( RowReorder.prototype, {
 				// Don't need to worry about setting scroll <0 or beyond the
 				// scroll bound as the browser will just reject that.
 				if ( scroll.windowVert ) {
-					document.body.scrollTop += scroll.windowVert;
+					document.body.scrollBottom -= scroll.windowVert;
 				}
 
 				// DataTables scrolling
