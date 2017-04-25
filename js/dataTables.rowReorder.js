@@ -283,7 +283,10 @@ $.extend( RowReorder.prototype, {
 		var topDiff = this._eventToPage( e, 'Y' ) - start.top;
 		var leftDiff = this._eventToPage( e, 'X' ) - start.left;
 		var snap = this.c.snapX;
+		var cloneOuterHeight = this.dom.clone.outerHeight();
+		var documentOuterHeight = $(document).outerHeight()
 		var left;
+		var top = topDiff + start.offsetTop;
 
 		if ( snap === true ) {
 			left = start.offsetLeft;
@@ -295,8 +298,15 @@ $.extend( RowReorder.prototype, {
 			left = leftDiff + start.offsetLeft;
 		}
 
+		if(top < 0) {
+			top = 0
+		}
+		else if(top + cloneOuterHeight > documentOuterHeight) {
+			top = documentOuterHeight - cloneOuterHeight;
+		}
+
 		this.dom.clone.css( {
-			top: topDiff + start.offsetTop,
+			top: top,
 			left: left
 		} );
 	},
