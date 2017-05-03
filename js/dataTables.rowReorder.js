@@ -118,7 +118,13 @@ var RowReorder = function ( dt, opts ) {
 		},
 
 		/** @type {integer} Window height cached value */
-		windowHeight: 0
+		windowHeight: 0,
+
+		/** @type {integer} Document outer height cached value */
+		documentOuterHeight: 0,
+
+		/** @type {integer} DOM clone outer height cached value */
+		domCloneOuterHeight: 0,
 	};
 
 	// DOM items
@@ -232,6 +238,7 @@ $.extend( RowReorder.prototype, {
 		this.s.middles = middles;
 		this.s.bodyTop = $( dt.table().body() ).offset().top;
 		this.s.windowHeight = $(window).height();
+		this.s.documentOuterHeight = $(document).outerHeight();
 	},
 
 
@@ -268,6 +275,7 @@ $.extend( RowReorder.prototype, {
 		clone.appendTo( 'body' );
 
 		this.dom.clone = clone;
+		this.s.domCloneOuterHeight = clone.outerHeight();
 	},
 
 
@@ -283,8 +291,6 @@ $.extend( RowReorder.prototype, {
 		var topDiff = this._eventToPage( e, 'Y' ) - start.top;
 		var leftDiff = this._eventToPage( e, 'X' ) - start.left;
 		var snap = this.c.snapX;
-		var cloneOuterHeight = this.dom.clone.outerHeight();
-		var documentOuterHeight = $(document).outerHeight()
 		var left;
 		var top = topDiff + start.offsetTop;
 
@@ -301,8 +307,8 @@ $.extend( RowReorder.prototype, {
 		if(top < 0) {
 			top = 0
 		}
-		else if(top + cloneOuterHeight > documentOuterHeight) {
-			top = documentOuterHeight - cloneOuterHeight;
+		else if(top + this.s.domCloneOuterHeight > this.s.documentOuterHeight) {
+			top = this.s.documentOuterHeight - this.s.domCloneOuterHeight;
 		}
 
 		this.dom.clone.css( {
