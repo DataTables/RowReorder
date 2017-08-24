@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="ajax-id" table-class="display" order="1">
+
+<css lib="datatables rowreorder" />
+<js lib="jquery datatables rowreorder">
+<![CDATA[
+
+$(document).ready(function() {
+	var table = $('#example').DataTable( {
+        ajax: '../../../../examples/ajax/data/objects.txt',
+        columns: [
+            { data: 'id' },
+            { data: 'name' },
+            { data: 'position' },
+            { data: 'office' },
+            { data: 'extn' },
+            { data: 'start_date' },
+            { data: 'salary' }
+        ],
+		rowReorder: {
+            dataSrc: 'id'
+        }
+	} );
+} );
+
+]]>
+</js>
+
+<title lib="RowReorder">Ajax data source with objects</title>
+
+<info><![CDATA[
+
+This example demonstrates the `-init rowReorder.dataSrc` property in use. In order to be able to perform its data swap operation for row reordering, RowReorder needs to know what data property contains the sequence number. It uses the same nested object dot notation as `-init columns.data` should you need to use nested data.
+
+In this example, it makes use of the ID column. You generally wouldn't swap data on the ID, use a sequence number instead, but the example has an id property which is useful for this demonstration.
+
+]]></info>
+
+</dt-example>
+
