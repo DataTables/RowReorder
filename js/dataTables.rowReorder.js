@@ -532,6 +532,29 @@ $.extend( RowReorder.prototype, {
 		// Emit event
 		this._emitEvent( 'row-reorder', eventArgs );
 
+		var update = function () {
+			if ( that.c.update ) {
+				for ( i=0, ien=fullDiff.length ; i<ien ; i++ ) {
+					var row = dt.row( fullDiff[i].node );
+					var rowData = row.data();
+
+					setDataFn( rowData, fullDiff[i].newData );
+
+					// Invalidate the cell that has the same data source as the dataSrc
+					dt.columns().every( function () {
+						if ( this.dataSrc() === dataSrc ) {
+							dt.cell( fullDiff[i].node, this.index() ).invalidate( 'data' );
+						}
+					} );
+				}
+
+				// Trigger row reordered event
+				that._emitEvent( 'row-reordered', eventArgs );
+
+				dt.draw( false );
+			}
+		};
+
 		// Editor interface
 		if ( this.c.editor ) {
 			// Disable user interaction while Editor is submitting
@@ -544,32 +567,20 @@ $.extend( RowReorder.prototype, {
 					$.extend( {submit: 'changed'}, this.c.formOptions )
 				)
 				.multiSet( dataSrc, idDiff )
+				.one( 'submitUnsuccessful.rowReorder', function () {
+					dt.draw( false );
+				} )
+				.one( 'submitSuccess.rowReorder', function () {
+					update();
+				} )
 				.one( 'submitComplete', function () {
 					that.c.enable = true;
+					that.c.editor.off( '.rowReorder' );
 				} )
 				.submit();
 		}
-
-		// Do update if required
-		if ( this.c.update ) {
-			for ( i=0, ien=fullDiff.length ; i<ien ; i++ ) {
-				var row = dt.row( fullDiff[i].node );
-				var rowData = row.data();
-
-				setDataFn( rowData, fullDiff[i].newData );
-
-				// Invalidate the cell that has the same data source as the dataSrc
-				dt.columns().every( function () {
-					if ( this.dataSrc() === dataSrc ) {
-						dt.cell( fullDiff[i].node, this.index() ).invalidate( 'data' );
-					}
-				} );
-			}
-			
-			// Trigger row reordered event
-			this._emitEvent( 'row-reordered', eventArgs );
-
-			dt.draw( false );
+		else {
+			update();
 		}
 	},
 
