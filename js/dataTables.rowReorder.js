@@ -124,7 +124,7 @@ var RowReorder = function ( dt, opts ) {
 		documentOuterHeight: 0,
 
 		/** @type {integer} DOM clone outer height cached value */
-		domCloneOuterHeight: 0,
+		domCloneOuterHeight: 0
 	};
 
 	// DOM items
