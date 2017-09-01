@@ -11,7 +11,7 @@ fi
 # If not run from DataTables build script, redirect to there
 if [ -z "$DT_BUILD" ]; then
 	cd $DT_DIR/build
-	./make.sh extension RowGroup $DEBUG
+	./make.sh extension RowReorder $DEBUG
 	cd -
 	exit
 fi
