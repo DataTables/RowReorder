@@ -5,7 +5,7 @@
 
 <info><![CDATA[
 
-RowReorder requires very little styling information of its own, with styling needed only for the moving and target elements. As such, integrating RowReorder with your application should be as simple as including the Javascript and base stylesheet! This section shows RowReorder being styling using external CSS frameworks and other styling options.
+RowReorder requires very little styling information of its own, with styling needed only for the moving and target elements. As such, integrating RowReorder with your application should be as simple as including the Javascript and base stylesheet! This section shows RowReorder being styled using external CSS frameworks and other styling options.
 
 ]]></info>
 
