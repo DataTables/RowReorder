@@ -5,7 +5,10 @@
 	<since>1.2.1</since>
 
 	<type type="function">
-		<signature>function( node, position )</signature>
+		<signature>function( e, node, position )</signature>
+		<parameter type="object" name="e">
+			jQuery event object
+		</parameter>
 		<parameter type="node" name="node">
 			The row being reordered.
 		</parameter>
@@ -29,7 +32,7 @@ var table = $('#example').DataTable( {
 	rowReorder: true
 } );
 
-table.on( 'pre-row-reorder', function ( node, index ) {
+table.on( 'pre-row-reorder', function ( e, node, index ) {
 	console.log( 'Row reorder started: ', node, index );
 } );
 
