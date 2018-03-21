@@ -567,6 +567,11 @@ $.extend( RowReorder.prototype, {
 					$.extend( {submit: 'changed'}, this.c.formOptions )
 				)
 				.multiSet( dataSrc, idDiff )
+				.one( 'preSubmitCancelled.rowReorder', function () {
+					that.c.enable = true;
+					that.c.editor.off( '.rowReorder' );
+					dt.draw( false );
+				} )
 				.one( 'submitUnsuccessful.rowReorder', function () {
 					dt.draw( false );
 				} )
