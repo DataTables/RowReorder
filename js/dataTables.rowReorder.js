@@ -1,11 +1,11 @@
-/*! RowReorder 1.2.3
+/*! RowReorder 1.2.4-dev
  * 2015-2017 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     RowReorder
  * @description Row reordering extension for DataTables
- * @version     1.2.3
+ * @version     1.2.4-dev
  * @file        dataTables.rowReorder.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
@@ -775,7 +775,7 @@ Api.register( 'rowReorder.disable()', function () {
  * @name RowReorder.version
  * @static
  */
-RowReorder.version = '1.2.3';
+RowReorder.version = '1.2.4-dev';
 
 
 $.fn.dataTable.RowReorder = RowReorder;
