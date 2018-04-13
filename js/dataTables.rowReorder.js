@@ -194,6 +194,15 @@ $.extend( RowReorder.prototype, {
 				return false;
 			}
 		} );
+		
+		// check if sorting should reorder data
+		// if it should reorder, then it adds listener for sorting, and when data has been 
+		// sorted, it updates data with new row numbers.
+		if (that.c.reorderOnSort) { 
+			$( table ).on( 'order.dt', function (e, table, sort) {
+				that._ReNumerate();
+    			});
+		}
 
 		dt.on( 'destroy.rowReorder', function () {
 			$(dt.table().container()).off( '.rowReorder' );
@@ -316,6 +325,32 @@ $.extend( RowReorder.prototype, {
 			left: left
 		} );
 	},
+	
+	/**
+	 * Update the items position based on new order
+	 *
+	 * @private
+	 */
+	_ReNumerate: function ()
+	{
+		var i, ien,
+		dt = this.s.dt;
+
+		// Calculate the difference
+		var Nodes = $.unique(dt.rows().nodes().toArray());
+
+		var getDataFn = this.s.getDataFn;
+		var setDataFn = this.s.setDataFn;
+
+		for ( i=0, ien=Nodes.length ; i<ien ; i++ ) {
+
+			var rowData = dt.row( Nodes[i] ).data();
+			setDataFn(rowData, i);
+
+			var row = dt.row(Nodes[i]);
+			row.invalidate('data');
+		}
+	},
 
 
 	/**
@@ -364,6 +399,12 @@ $.extend( RowReorder.prototype, {
 		var that = this;
 		var dt = this.s.dt;
 		var start = this.s.start;
+		
+		//if the table has been reordered on sorting, then this will set the sorting 
+		//to new column order when dragging and dropping rows
+		if (this.c.reorderOnSort) {
+			dt.order([0,'asc']);
+		}
 
 		var offset = target.offset();
 		start.top = this._eventToPage( e, 'Y' );
@@ -734,7 +775,14 @@ RowReorder.defaults = {
 	 *
 	 * @type {Boolean}
 	 */
-	update: true
+	update: true,
+	
+	/**
+	 * Update the sequence on sorting
+	 *
+	 * @type {Boolean}
+	 */
+	reorderOnSort: false
 };
 
 
