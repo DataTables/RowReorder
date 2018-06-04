@@ -180,6 +180,11 @@ $.extend( RowReorder.prototype, {
 				return;
 			}
 
+			// Ignore excluded children of the selector
+			if ( $(e.target).is(that.c.excludedChildren) ) {
+				return true;
+			}
+
 			var tr = $(this).closest('tr');
 			var row = dt.row( tr );
 
@@ -734,7 +739,15 @@ RowReorder.defaults = {
 	 *
 	 * @type {Boolean}
 	 */
-	update: true
+	update: true,
+
+	/**
+	 * Selector for children of the drag handle selector that mouseDown events
+	 * will be passed through to and drag will not activate
+	 *
+	 * @type {String}
+	 */
+	excludedChildren: 'a'
 };
 
 
