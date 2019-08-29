@@ -1,11 +1,11 @@
-/*! RowReorder 1.2.5
+/*! RowReorder 1.2.6-dev
  * 2015-2018 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     RowReorder
  * @description Row reordering extension for DataTables
- * @version     1.2.5
+ * @version     1.2.6-dev
  * @file        dataTables.rowReorder.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
@@ -528,10 +528,11 @@ $.extend( RowReorder.prototype, {
 		
 		// Create event args
 		var eventArgs = [ fullDiff, {
-			dataSrc:    dataSrc,
-			nodes:      diffNodes,
-			values:     idDiff,
-			triggerRow: dt.row( this.dom.target )
+			dataSrc:       dataSrc,
+			nodes:         diffNodes,
+			values:        idDiff,
+			triggerRow:    dt.row( this.dom.target ),
+			originalEvent: e
 		} ];
 		
 		// Emit event
@@ -788,7 +789,7 @@ Api.register( 'rowReorder.disable()', function () {
  * @name RowReorder.version
  * @static
  */
-RowReorder.version = '1.2.5';
+RowReorder.version = '1.2.6-dev';
 
 
 $.fn.dataTable.RowReorder = RowReorder;
