@@ -139,8 +139,13 @@ var RowReorder = function ( dt, opts ) {
 	// Check if row reorder has already been initialised on this table
 	var settings = this.s.dt.settings()[0];
 	var exisiting = settings.rowreorder;
+
 	if ( exisiting ) {
 		return exisiting;
+	}
+
+	if ( !this.dom.dtScroll.length ) {
+		this.dom.dtScroll = $(this.s.dt.table().container(), 'tbody')
 	}
 
 	settings.rowreorder = this;
@@ -621,10 +626,10 @@ $.extend( RowReorder.prototype, {
 
 		// Window calculations - based on the mouse position in the window,
 		// regardless of scrolling
-		if ( windowY < buffer ) {
+		if ( windowY < $(window).scrollTop() + buffer ) {
 			windowVert = scrollSpeed * -1;
 		}
-		else if ( windowY > scroll.windowHeight - buffer ) {
+		else if ( windowY > scroll.windowHeight + $(window).scrollTop() - buffer ) {
 			windowVert = scrollSpeed;
 		}
 
@@ -663,7 +668,13 @@ $.extend( RowReorder.prototype, {
 				// Don't need to worry about setting scroll <0 or beyond the
 				// scroll bound as the browser will just reject that.
 				if ( scroll.windowVert ) {
-					document.body.scrollTop += scroll.windowVert;
+					var top = $(document).scrollTop();
+					$(document).scrollTop(top + scroll.windowVert);
+
+					if ( top !== $(document).scrollTop() ) {
+						var move = parseFloat(that.dom.clone.css("top"));
+						that.dom.clone.css("top", move + scroll.windowVert);					
+					}
 				}
 
 				// DataTables scrolling
