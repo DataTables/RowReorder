@@ -240,7 +240,7 @@ $.extend( RowReorder.prototype, {
 		} );
 
 		var middles = $.map( tops, function ( top, i ) {
-			return tops.length < i-1 ?
+			return i < tops.length-1 ?
 				(top + tops[i+1]) / 2 :
 				(top + top + $( dt.row( ':last-child' ).node() ).outerHeight() ) / 2;
 		} );
