@@ -430,7 +430,6 @@ $.extend( RowReorder.prototype, {
 		var middles = this.s.middles;
 		var insertPoint = null;
 		var dt = this.s.dt;
-		var body = dt.table().body();
 
 		// Determine where the row should be inserted based on the mouse
 		// position
@@ -447,18 +446,13 @@ $.extend( RowReorder.prototype, {
 
 		// Perform the DOM shuffle if it has changed from last time
 		if ( this.s.lastInsert === null || this.s.lastInsert !== insertPoint ) {
-			if ( insertPoint === 0 ) {
-				this.dom.target.prependTo( body );
+			var nodes = $.unique( dt.rows( { page: 'current' } ).nodes().toArray() );
+
+			if ( insertPoint > this.s.lastInsert ) {
+				this.dom.target.insertAfter( nodes[ insertPoint-1 ] );
 			}
 			else {
-				var nodes = $.unique( dt.rows( { page: 'current' } ).nodes().toArray() );
-
-				if ( insertPoint > this.s.lastInsert ) {
-					this.dom.target.insertAfter( nodes[ insertPoint-1 ] );
-				}
-				else {
-					this.dom.target.insertBefore( nodes[ insertPoint ] );
-				}
+				this.dom.target.insertBefore( nodes[ insertPoint ] );
 			}
 
 			this._cachePositions();
