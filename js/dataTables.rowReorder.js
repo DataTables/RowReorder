@@ -235,14 +235,10 @@ $.extend( RowReorder.prototype, {
 		// not what DataTables thinks it is, since we have been altering the
 		// order
 		var nodes = $.unique( dt.rows( { page: 'current' } ).nodes().toArray() );
-		var tops = $.map( nodes, function ( node, i ) {
-			return $(node).position().top - headerHeight;
-		} );
+		var middles = $.map( nodes, function ( node, i ) {
+			var top = $(node).position().top - headerHeight;
 
-		var middles = $.map( tops, function ( top, i ) {
-			return i < tops.length-1 ?
-				(top + tops[i+1]) / 2 :
-				(top + top + $( dt.row( ':last-child' ).node() ).outerHeight() ) / 2;
+			return (top + top + $(node).outerHeight() ) / 2;
 		} );
 
 		this.s.middles = middles;
