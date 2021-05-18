@@ -1,11 +1,11 @@
-/*! Bootstrap 4 styling wrapper for RowReorder
+/*! Bootstrap 5 styling wrapper for RowReorder
  * ©2018 SpryMedia Ltd - datatables.net/license
  */
 
 (function( factory ){
 	if ( typeof define === 'function' && define.amd ) {
 		// AMD
-		define( ['jquery', 'datatables.net-bs4', 'datatables.net-rowreorder'], function ( $ ) {
+		define( ['jquery', 'datatables.net-bs5', 'datatables.net-rowreorder'], function ( $ ) {
 			return factory( $, window, document );
 		} );
 	}
@@ -17,7 +17,7 @@
 			}
 
 			if ( ! $ || ! $.fn.dataTable ) {
-				$ = require('datatables.net-bs4')(root, $).$;
+				$ = require('datatables.net-bs5')(root, $).$;
 			}
 
 			if ( ! $.fn.dataTable.RowReorder ) {
