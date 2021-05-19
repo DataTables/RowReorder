@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="sequence" table-class="display" order="9" framework="bulma">
+
+<css lib="datatables rowreorder"/>
+<js lib="jquery datatables rowreorder">
+<![CDATA[
+
+$(document).ready(function() {
+	$('#example').DataTable( {
+		rowReorder: true
+	} );
+} );
+
+]]>
+</js>
+
+<title lib="RowReorder">Bulma styling</title>
+
+<info><![CDATA[
+
+This example shows DataTables and the RowReorder extension being used with the [Bulma](https://bulma.io/) framework providing the styling. The [DataTables / Bulma integration](//datatables.net/manual/styling/bulma) provides seamless integration for DataTables to be used in a Bulma page.
+
+]]></info>
+
+</dt-example>
+
