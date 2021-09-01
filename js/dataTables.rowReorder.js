@@ -131,6 +131,7 @@ var RowReorder = function ( dt, opts ) {
 	this.dom = {
 		/** @type {jQuery} Cloned row being moved around */
 		clone: null,
+		cloneParent: null,
 
 		/** @type {jQuery} DataTables scrolling container */
 		dtScroll: $('div.dataTables_scrollBody', this.s.dt.table().container())
@@ -266,6 +267,9 @@ $.extend( RowReorder.prototype, {
 		// to reduce reflows
 		var tableWidth = target.outerWidth();
 		var tableHeight = target.outerHeight();
+		var scrollBody = $($(this.s.dt.table().node()).parent());
+		var scrollWidth = scrollBody.width();
+		var scrollLeft = scrollBody.scrollLeft();
 		var sizes = target.children().map( function () {
 			return $(this).width();
 		} );
@@ -277,10 +281,17 @@ $.extend( RowReorder.prototype, {
 				this.style.width = sizes[i]+'px';
 			} );
 
+		var cloneParent = $('<div>')
+			.addClass('dt-rowReorder-float-parent')
+			.width(scrollWidth)
+			.append(clone)
+			.appendTo( 'body' )
+			.scrollLeft(scrollLeft);
+
 		// Insert into the document to have it floating around
-		clone.appendTo( 'body' );
 
 		this.dom.clone = clone;
+		this.dom.cloneParent = cloneParent;
 		this.s.domCloneOuterHeight = clone.outerHeight();
 	},
 
@@ -307,7 +318,7 @@ $.extend( RowReorder.prototype, {
 			left = start.offsetLeft + snap;
 		}
 		else {
-			left = leftDiff + start.offsetLeft;
+			left = leftDiff + start.offsetLeft + this.dom.cloneParent.scrollLeft();
 		}
 
 		if(top < 0) {
@@ -317,7 +328,7 @@ $.extend( RowReorder.prototype, {
 			top = this.s.documentOuterHeight - this.s.domCloneOuterHeight;
 		}
 
-		this.dom.clone.css( {
+		this.dom.cloneParent.css( {
 			top: top,
 			left: left
 		} );
@@ -479,7 +490,9 @@ $.extend( RowReorder.prototype, {
 		var dataSrc = this.c.dataSrc;
 
 		this.dom.clone.remove();
+		this.dom.cloneParent.remove();
 		this.dom.clone = null;
+		this.dom.cloneParent = null;
 
 		this.dom.target.removeClass( 'dt-rowReorder-moving' );
 		//this.dom.target = null;
@@ -662,8 +675,8 @@ $.extend( RowReorder.prototype, {
 					$(document).scrollTop(top + scroll.windowVert);
 
 					if ( top !== $(document).scrollTop() ) {
-						var move = parseFloat(that.dom.clone.css("top"));
-						that.dom.clone.css("top", move + scroll.windowVert);					
+						var move = parseFloat(that.dom.cloneParent.css("top"));
+						that.dom.cloneParent.css("top", move + scroll.windowVert);					
 					}
 				}
 
