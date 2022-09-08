@@ -29,8 +29,9 @@ css_frameworks rowReorder $OUT_DIR/css
 
 # Copy JS
 rsync -r js $OUT_DIR
-js_compress $OUT_DIR/js/dataTables.rowReorder.js
-js_frameworks rowReorder $OUT_DIR/js
+js_compress $OUT_DIR/js/dataTables.rowReorder.js "jquery datatables.net"
+js_frameworks rowReorder $OUT_DIR/js "jquery datatables.net-FW datatables.net-rowreorder"
+
 
 # Copy Types
 if [ -d $OUT_DIR/types ]; then

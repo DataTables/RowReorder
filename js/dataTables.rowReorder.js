@@ -21,36 +21,6 @@
  * For details please refer to: http://www.datatables.net
  */
 
-(function( factory ){
-	if ( typeof define === 'function' && define.amd ) {
-		// AMD
-		define( ['jquery', 'datatables.net'], function ( $ ) {
-			return factory( $, window, document );
-		} );
-	}
-	else if ( typeof exports === 'object' ) {
-		// CommonJS
-		module.exports = function (root, $) {
-			if ( ! root ) {
-				root = window;
-			}
-
-			if ( ! $ || ! $.fn.dataTable ) {
-				$ = require('datatables.net')(root, $).$;
-			}
-
-			return factory( $, root, root.document );
-		};
-	}
-	else {
-		// Browser
-		factory( jQuery, window, document );
-	}
-}(function( $, window, document, undefined ) {
-'use strict';
-var DataTable = $.fn.dataTable;
-
-
 /**
  * RowReorder provides the ability in DataTables to click and drag rows to
  * reorder them. When a row is dropped the data for the rows effected will be
@@ -827,7 +797,3 @@ $(document).on( 'init.dt.dtr', function (e, settings, json) {
 		}
 	}
 } );
-
-
-return RowReorder;
-}));
