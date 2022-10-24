@@ -1,67 +1,117 @@
-// Type definitions for JQuery DataTables RowReorder extension 1.1
-// Project: http://datatables.net/extensions/rowreorder/, https://datatables.net
-// Definitions by: Vincent Biret <https://github.com/baywet>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-// TypeScript Version: 2.4
+// Type definitions for DataTables RowReorder
+//
+// Project: https://datatables.net/extensions/rowreorder/, https://datatables.net
+// Definitions by:
+//   SpryMedia
+//   Vincent Biret <https://github.com/baywet>
 
-/// <reference types="jquery" />
-/// <reference types="datatables.net"/>
+import DataTables, {Api} from 'datatables.net';
 
-declare namespace DataTables {
-    interface Settings {
-        /**
-         * Enable and configure the RowReorder extension for DataTables
-         */
-        rowReorder?: RowReorderSettings;
-    }
+export default DataTables;
 
-    interface Api {
-        rowReorder:{
-            /**
-             * Disable the end user's ability to click and drag to reorder rows.
-             * 
-             * @returns DataTables API instance
-             */
-            disable(): Api;
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * DataTables' types integration
+ */
+declare module 'datatables.net' {
+	interface Config {
+		/**
+		 * RowReorder extension options
+		 */
+		rowReorder?: boolean | ConfigRowReorder;
+	}
 
-            /**
-             * Enable, or optionally disable, the end user's ability to click and drag to reorder rows.
-             * 
-             * @param enable that can be used to indicate if row reordering should be enabled or disabled.
-             * @returns DataTables API instance
-             */
-            enable(enable?: boolean): Api;
-        };
-    }
+	interface Api<T> {
+		/**
+		 * RowReorder methods container
+		 * 
+		 * @returns Api for chaining with the additional RowReorder methods
+		 */
+		rowReorder: ApiRowReorderMethods<T>;
+	}
 
-    interface RowReorderSettings {
-        /**
-         * Configure the data point that will be used for the reordering data
-         */
-        dataSrc?: string;
-        /**
-         * Attach an Editor instance for database updating
-         */
-        editor?: any;
-        /**
-         * Enable / disable RowReorder's user interaction
-         */
-        enable?: boolean;
-        /**
-         * Set the options for the Editor form when submitting data
-         */
-        formOptions?: any;
-        /**
-         * Define the selector used to pick the elements that will start a drag
-         */
-        selector?: string;
-        /**
-         * Horizontal position control of the row being dragged
-         */
-        snapX?: number | boolean;
-        /**
-         * Control automatic of data when a row is dropped
-         */
-        update?: boolean;
-    }
+	interface ApiStatic {
+		/**
+		 * RowReorder class
+		 */
+		RowReorder: {
+			/**
+			 * Create a new RowReorder instance for the target DataTable
+			 */
+			new (dt: Api<any>, settings: boolean | ConfigRowReorder);
+
+			/**
+			 * RowReorder version
+			 */
+			version: string;
+
+			/**
+			 * Default configuration values
+			 */
+			defaults: ConfigRowReorder;
+		}
+	}
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Options
+ */
+
+interface ConfigRowReorder {
+	/**
+	 * Configure the data point that will be used for the reordering data
+	 */
+	dataSrc?: string;
+
+	/**
+	 * Attach an Editor instance for database updating
+	 */
+	editor?: any;
+
+	/**
+	 * Enable / disable RowReorder's user interaction
+	 */
+	enable?: boolean;
+
+	/**
+	 * Set the options for the Editor form when submitting data
+	 */
+	formOptions?: any;
+
+	/**
+	 * Define the selector used to pick the elements that will start a drag
+	 */
+	selector?: string;
+
+	/**
+	 * Horizontal position control of the row being dragged
+	 */
+	snapX?: number | boolean;
+
+	/**
+	 * Control automatic of data when a row is dropped
+	 */
+	update?: boolean;
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * API
+ */
+
+interface ApiRowReorderMethods<T> extends Api<T> {
+	/**
+	 * Disable the end user's ability to click and drag to reorder rows.
+	 * 
+	 * @returns DataTables API instance
+	 */
+	disable(): Api<T>;
+
+	/**
+	 * Enable, or optionally disable, the end user's ability to click and drag to reorder rows.
+	 * 
+	 * @param enable that can be used to indicate if row reordering should be enabled or disabled.
+	 * @returns DataTables API instance
+	 */
+	enable(enable?: boolean): Api<T>;
 }
