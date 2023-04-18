@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="sequence" table-class="display" order="8">
+
+<css lib="datatables rowreorder">
+	#result {
+		border: 1px solid #888;
+		background: #f7f7f7;
+		padding: 1em;
+		margin-bottom: 1em;
+	}
+</css>
+<js lib="jquery datatables rowreorder">
+<![CDATA[
+
+$(document).ready(function() {
+	var table = $('#example').DataTable( {
+		rowReorder: {
+			cancelable: true
+		}
+	} );
+
+	table.on( 'pre-row-reorder', function ( e, node, index ) {
+		$('#result').html( 'Drop is not canceled.' );
+	} );
+
+	table.on( 'row-reorder-canceled', function ( e, startRowIndex ) {
+		$('#result').html( 'Drop is canceled, starting row index :' + startRowIndex );
+	} );
+
+} );
+
+]]>
+</js>
+
+<title lib="RowReorder">Cancelable</title>
+
+<info><![CDATA[
+
+The `rr-init rowReorder.cancelable` option provides the ability to make the drag & drop operation cancelable either by pressing the ESC key or dropping the element outside of the table.
+
+]]></info>
+
+<demo-html>
+	<div id="result">Drop is not canceled.</div>
+</demo-html>
+
+</dt-example>
+
