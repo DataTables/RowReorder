@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-option library="RowReorder">
+	<name>rowReorder.cancelable</name>
+	<summary>Enable / disable the canceling of the drag & drop interaction</summary>
+
+	<type type="boolean">
+		<description>
+			* `true` - Canceling is enabled either by pressing the ESC key or dropping the element outside of the table.
+			* `false` - Canceling is disabled.
+		</description>
+	</type>
+
+	<default value="false">
+		Canceling is not enabled.
+	</default>
+
+	<description>
+	</description>
+
+	<example title="Disable data update."><![CDATA[
+
+$('#example').DataTable( {
+	rowReorder: {
+		cancelable: false
+	}
+} );
+
+]]></example>
+
+</dt-option>

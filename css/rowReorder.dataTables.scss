@@ -15,6 +15,10 @@ div.dt-rowReorder-float-parent {
 	overflow: hidden;
 }
 
+div.dt-rowReorder-float-parent.drop-not-allowed {
+	cursor: not-allowed;
+}
+
 tr.dt-rowReorder-moving {
 	outline: $moved-outline;
 	outline-offset: -2px;
@@ -28,3 +32,5 @@ table.dataTable td.reorder {
 	text-align: center;
 	cursor: move;
 }
+
+

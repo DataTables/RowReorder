@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-event library="RowReorder">
+	<name>row-reorder-changed</name>
+	<summary>Row moved into new position by the end user</summary>
+	<since>1.3.3</since>
+
+	<type type="function">
+		<signature>function( e, params )</signature>
+		<parameter type="object" name="e">
+			jQuery event object
+		</parameter>
+		<parameter type="object" name="params">
+			This parameter provides the following information:
+
+			* `-type string` `insertPlacement` - Insert placement, either `before` or `after`
+			* `-type integer` `insertPoint` - Insert point starting from `0`
+			* `-type object` `row` - DOM node of the moved row
+		</parameter>
+		<scope>HTML table element</scope>
+	</type>
+
+	<description>
+		This event is fired when the user moves a given row into a new position.
+
+		Please note that, as with all DataTables emitted events, this event is triggered with the `dt` namespace. As such, to listen for this event, you must also use the `dt` namespace by simply appending `.dt` to your event name, or use the `dt-api on()` method to listen for the event which will automatically append this namespace.
+	</description>
+
+	<example title="Log when row-reorder-changed is fired"><![CDATA[
+
+var table = $('#example').DataTable( {
+	rowReorder: true
+} );
+
+table.on( 'row-reorder-changed', function ( e, { insertPlacement, insertPoint  } } ) {
+	console.log( 'Row moved ' + insertPlacement + ' the ' + insertPoint + '. row' );
+} );
+
+]]></example>
+
+</dt-event>
+

@@ -1,11 +1,11 @@
-/*! RowReorder 1.3.2
+/*! RowReorder 1.3.3
  * 2015-2023 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     RowReorder
  * @description Row reordering extension for DataTables
- * @version     1.3.2
+ * @version     1.3.3
  * @file        dataTables.rowReorder.js
  * @author      SpryMedia Ltd
  * @contact     datatables.net
@@ -35,7 +35,7 @@
  * * `rowReorder` parameter in the DataTable initialisation object
  * * `new $.fn.dataTable.RowReorder( table, opts )` after DataTables
  *   initialisation.
- * 
+ *
  *  @class
  *  @param {object} settings DataTables settings object for the host table
  *  @param {object} [opts] Configuration options
@@ -84,7 +84,8 @@ var RowReorder = function ( dt, opts ) {
 			left: 0,
 			offsetTop: 0,
 			offsetLeft: 0,
-			nodes: []
+			nodes: [],
+			rowIndex: 0
 		},
 
 		/** @type {integer} Window height cached value */
@@ -94,7 +95,10 @@ var RowReorder = function ( dt, opts ) {
 		documentOuterHeight: 0,
 
 		/** @type {integer} DOM clone outer height cached value */
-		domCloneOuterHeight: 0
+		domCloneOuterHeight: 0,
+
+		/** @type {integer} Flag used for signing if the drop is enabled or not */
+		dropAllowed: true
 	};
 
 	// DOM items
@@ -180,13 +184,15 @@ $.extend( RowReorder.prototype, {
 			$(dt.table().container()).off( '.rowReorder' );
 			dt.off( '.rowReorder' );
 		} );
+
+		this._keyup = this._keyup.bind( this );
 	},
 
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Private methods
 	 */
-	
+
 	/**
 	 * Cache the measurements that RowReorder needs in the mouse move handler
 	 * to attempt to speed things up, rather than reading from the DOM.
@@ -216,6 +222,7 @@ $.extend( RowReorder.prototype, {
 		this.s.bodyTop = $( dt.table().body() ).offset().top;
 		this.s.windowHeight = $(window).height();
 		this.s.documentOuterHeight = $(document).outerHeight();
+		this.s.bodyArea = this._calcBodyArea();
 	},
 
 
@@ -351,6 +358,7 @@ $.extend( RowReorder.prototype, {
 		var that = this;
 		var dt = this.s.dt;
 		var start = this.s.start;
+		var cancelable = this.c.cancelable;
 
 		var offset = target.offset();
 		start.top = this._eventToPage( e, 'Y' );
@@ -362,6 +370,9 @@ $.extend( RowReorder.prototype, {
 		this._cachePositions();
 		this._clone( target );
 		this._clonePosition( e );
+
+		var bodyY = this._eventToPage( e, 'Y' ) - this.s.bodyTop;
+		start.rowIndex = this._calcRowIndexByPos(bodyY);
 
 		this.dom.target = target;
 		target.addClass( 'dt-rowReorder-moving' );
@@ -392,6 +403,11 @@ $.extend( RowReorder.prototype, {
 			dtHeight:     scrollWrapper.length ? scrollWrapper.outerHeight() : null,
 			dtWidth:      scrollWrapper.length ? scrollWrapper.outerWidth() : null
 		};
+
+		// Add keyup handler if dragging is cancelable
+		if ( cancelable ) {
+			$( document ).on( 'keyup', this._keyup );
+		}
 	},
 
 
@@ -406,11 +422,23 @@ $.extend( RowReorder.prototype, {
 	{
 		this._clonePosition( e );
 
+		var start = this.s.start;
+		var cancelable = this.c.cancelable;
+
+		if (cancelable) {
+			var bodyArea = this.s.bodyArea;
+			var cloneArea = this._calcCloneParentArea();
+			this.s.dropAllowed = this._rectanglesIntersect(bodyArea, cloneArea);
+
+			this.s.dropAllowed
+				? $( this.dom.cloneParent ).removeClass('drop-not-allowed')
+				: $( this.dom.cloneParent ).addClass('drop-not-allowed');
+		}
+
 		// Transform the mouse position into a position in the table's body
 		var bodyY = this._eventToPage( e, 'Y' ) - this.s.bodyTop;
 		var middles = this.s.middles;
 		var insertPoint = null;
-		var dt = this.s.dt;
 
 		// Determine where the row should be inserted based on the mouse
 		// position
@@ -425,25 +453,19 @@ $.extend( RowReorder.prototype, {
 			insertPoint = middles.length;
 		}
 
-		// Perform the DOM shuffle if it has changed from last time
-		if ( this.s.lastInsert === null || this.s.lastInsert !== insertPoint ) {
-			var nodes = $.unique( dt.rows( { page: 'current' } ).nodes().toArray() );
-
-			if ( insertPoint > this.s.lastInsert ) {
-				this.dom.target.insertAfter( nodes[ insertPoint-1 ] );
-			}
-			else {
-				this.dom.target.insertBefore( nodes[ insertPoint ] );
+		if ( cancelable ) {
+			if ( !this.s.dropAllowed ) {
+				// Move the row back to its original position becasuse the drop is not allowed
+				insertPoint = start.rowIndex > this.s.lastInsert ? start.rowIndex + 1 : start.rowIndex;
 			}
 
-			this._cachePositions();
-
-			this.s.lastInsert = insertPoint;
+			this.dom.target.toggleClass( 'dt-rowReorder-moving', this.s.dropAllowed );
 		}
+
+		this._moveTargetIntoPosition( insertPoint );
 
 		this._shiftScroll( e );
 	},
-
 
 	/**
 	 * Mouse up event handler - release the event handlers and perform the
@@ -458,20 +480,15 @@ $.extend( RowReorder.prototype, {
 		var dt = this.s.dt;
 		var i, ien;
 		var dataSrc = this.c.dataSrc;
+		var dropAllowed = this.s.dropAllowed;
 
-		this.dom.clone.remove();
-		this.dom.cloneParent.remove();
-		this.dom.clone = null;
-		this.dom.cloneParent = null;
+		if (!dropAllowed) {
+			that._cancel();
+			return;
+		}
 
-		this.dom.target.removeClass( 'dt-rowReorder-moving' );
-		//this.dom.target = null;
-
-		$(document).off( '.rowReorder' );
-		$(document.body).removeClass( 'dt-rowReorder-noOverflow' );
-
-		clearInterval( this.s.scrollInterval );
-		this.s.scrollInterval = null;
+		// Remove cloned elements, handlers, etc
+		this._cleanupDragging();
 
 		// Calculate the difference
 		var startNodes = this.s.start.nodes;
@@ -503,7 +520,7 @@ $.extend( RowReorder.prototype, {
 				diffNodes.push( endNodes[i] );
 			}
 		}
-		
+
 		// Create event args
 		var eventArgs = [ fullDiff, {
 			dataSrc:       dataSrc,
@@ -512,7 +529,7 @@ $.extend( RowReorder.prototype, {
 			triggerRow:    dt.row( this.dom.target ),
 			originalEvent: e
 		} ];
-		
+
 		// Emit event
 		this._emitEvent( 'row-reorder', eventArgs );
 
@@ -570,6 +587,71 @@ $.extend( RowReorder.prototype, {
 		}
 		else {
 			update();
+		}
+	},
+
+
+	/**
+	 * Moves the current target into the given position within the table
+	 * and caches the new positions
+	 *
+	 * @param  {integer} insertPoint Position
+	 * @private
+	 */
+	_moveTargetIntoPosition: function ( insertPoint ) {
+		var dt = this.s.dt;
+
+		// Perform the DOM shuffle if it has changed from last time
+		if ( this.s.lastInsert === null || this.s.lastInsert !== insertPoint ) {
+			var nodes = $.unique( dt.rows( { page: 'current' } ).nodes().toArray() );
+			var insertPlacement = '';
+
+			if ( insertPoint > this.s.lastInsert ) {
+				this.dom.target.insertAfter( nodes[ insertPoint-1 ] );
+				insertPlacement = 'after';
+			}
+			else {
+				this.dom.target.insertBefore( nodes[ insertPoint ] );
+				insertPlacement = 'before';
+			}
+
+			this._cachePositions();
+
+			this.s.lastInsert = insertPoint;
+
+			this._emitEvent( 'row-reorder-changed', {
+				insertPlacement,
+				insertPoint,
+				row: dt.row( this.dom.target )
+			} );
+		}
+	},
+
+
+	/**
+	 * Removes the cloned elements, event handlers, scrolling intervals, etc
+	 *
+	 * @private
+	 */
+	_cleanupDragging: function () {
+		var cancelable = this.c.cancelable;
+
+		this.dom.clone.remove();
+		this.dom.cloneParent.remove();
+		this.dom.clone = null;
+		this.dom.cloneParent = null;
+
+		this.dom.target.removeClass( 'dt-rowReorder-moving' );
+		//this.dom.target = null;
+
+		$(document).off( '.rowReorder' );
+		$(document.body).removeClass( 'dt-rowReorder-noOverflow' );
+
+		clearInterval( this.s.scrollInterval );
+		this.s.scrollInterval = null;
+
+		if ( cancelable ) {
+			$( document ).off( 'keyup', this._keyup );
 		}
 	},
 
@@ -646,7 +728,7 @@ $.extend( RowReorder.prototype, {
 
 					if ( top !== $(document).scrollTop() ) {
 						var move = parseFloat(that.dom.cloneParent.css("top"));
-						that.dom.cloneParent.css("top", move + scroll.windowVert);					
+						that.dom.cloneParent.css("top", move + scroll.windowVert);
 					}
 				}
 
@@ -660,6 +742,129 @@ $.extend( RowReorder.prototype, {
 				}
 			}, 20 );
 		}
+	},
+
+
+	/**
+	 * Calculates the current area of the table body and returns it as a rectangle
+	 *
+	 * @private
+	 */
+	_calcBodyArea: function ( e )
+	{
+		var dt = this.s.dt;
+		var offset = $( dt.table().body() ).offset();
+		var area = {
+			left: offset.left,
+			top: offset.top,
+			right: offset.left + $( dt.table().body() ).width(),
+			bottom: offset.top + $( dt.table().body() ).height()
+		}
+
+		return area;
+	},
+
+
+	/**
+	 * Calculates the current area of the cloned parent element and returns it as a rectangle
+	 *
+	 * @private
+	 */
+	_calcCloneParentArea: function ( e )
+	{
+		var dt = this.s.dt;
+		var offset = $( this.dom.cloneParent ).offset();
+		var area = {
+			left: offset.left,
+			top: offset.top,
+			right: offset.left + $( this.dom.cloneParent ).width(),
+			bottom: offset.top + $( this.dom.cloneParent ).height()
+		}
+
+		return area;
+	},
+
+
+	/**
+	 * Returns whether the given reactangles intersect or not
+	 *
+	 * @private
+	 */
+	_rectanglesIntersect: function ( a, b ) {
+		var noOverlap = a.left >= b.right
+			|| b.left >= a.right
+			|| a.top >= b.bottom
+			|| b.top >= a.bottom;
+
+		return !noOverlap;
+	},
+
+
+	/**
+	 * Calculates the index of the row which lays under the given Y position or
+	 * returns -1 if no such row
+	 *
+	 * @param  {integer} insertPoint Position
+	 * @private
+	 */
+	_calcRowIndexByPos: function ( bodyY ) {
+		// Determine where the row is located based on the mouse
+		// position
+
+		var dt = this.s.dt;
+		var nodes = $.unique( dt.rows( { page: 'current' } ).nodes().toArray() );
+		var rowIndex = -1;
+		var headerHeight = $( dt.table().node() ).find('thead').outerHeight();
+
+		$.each( nodes, function ( i, node ) {
+			var top = $(node).position().top - headerHeight;
+			var bottom = top + $(node).outerHeight();
+
+			if ( bodyY >= top && bodyY <= bottom ) {
+				rowIndex = i;
+			}
+		} );
+
+		return rowIndex;
+	},
+
+
+	/**
+	 * Handles key up events and cancels the dragging if ESC key is pressed
+	 *
+	 * @param  {object} e Mouse move event object
+	 * @private
+	 */
+	_keyup: function ( e ) {
+		var cancelable = this.c.cancelable;
+
+		if ( cancelable && e.which === 27 ) {
+			// ESC key is up
+    	e.preventDefault();
+			this._cancel();
+		}
+	},
+
+
+	/**
+	 * Cancels the dragging, moves target back into its original position
+	 * and cleans up the dragging
+	 *
+	 * @param  {object} e Mouse move event object
+	 * @private
+	 */
+	_cancel: function () {
+		var start = this.s.start;
+		var insertPoint = start.rowIndex > this.s.lastInsert ? start.rowIndex + 1 : start.rowIndex;
+
+		this._moveTargetIntoPosition( insertPoint );
+
+		this._cleanupDragging();
+
+		// Emit event
+		this._emitEvent( 'row-reorder-canceled', [
+			this.s.start.rowIndex
+		] );
 	}
 } );
 
@@ -732,7 +937,14 @@ RowReorder.defaults = {
 	 *
 	 * @type {String}
 	 */
-	excludedChildren: 'a'
+	excludedChildren: 'a',
+
+  /**
+	 * Enable / disable the canceling of the drag & drop interaction
+	 *
+	 * @type {Boolean}
+	 */
+	cancelable: false
 };
 
 
@@ -773,7 +985,7 @@ Api.register( 'rowReorder.disable()', function () {
  * @name RowReorder.version
  * @static
  */
-RowReorder.version = '1.3.2';
+RowReorder.version = '1.3.3';
 
 
 $.fn.dataTable.RowReorder = RowReorder;
