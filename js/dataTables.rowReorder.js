@@ -1,5 +1,5 @@
 /*! RowReorder 1.3.3
- * 2015-2023 SpryMedia Ltd - datatables.net/license
+ * © SpryMedia Ltd - datatables.net/license
  */
 
 /**
