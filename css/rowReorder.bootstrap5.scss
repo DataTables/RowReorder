@@ -3,3 +3,9 @@ $move-outline: 2px solid #0d6efd !default;
 $moved-outline: 2px solid #888 !default;
 
 @import 'rowReorder.dataTables.scss';
+
+html[data-bs-theme="dark"] {
+	div.dt-rowReorder-float-parent {
+		outline-color: rgb(13, 110, 253);
+	}
+}
