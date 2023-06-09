@@ -5,16 +5,26 @@
 <js lib="jquery datatables rowreorder">
 <![CDATA[
 
-$(document).ready(function() {
-	var table = $('#example').DataTable( {
-		rowReorder: true,
-		scrollY: 300,
-		paging: false
-	} );
-} );
+$('#example').DataTable({
+	paging: false,
+	rowReorder: true,
+	scrollY: 300
+});
 
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	paging: false,
+	rowReorder: true,
+	scrollY: 300
+});
+
+]]>
+</js-vanilla>
 
 <title lib="RowReorder">DataTables Scrolling</title>
 

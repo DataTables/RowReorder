@@ -5,18 +5,30 @@
 <js lib="jquery datatables rowreorder">
 <![CDATA[
 
-$(document).ready(function() {
-	var table = $('#example').DataTable( {
-		rowReorder: true,
-		columnDefs: [
-			{ orderable: true, className: 'reorder', targets: 0 },
-			{ orderable: false, targets: '_all' }
-		]
-	} );
-} );
+$('#example').DataTable({
+	rowReorder: true,
+	columnDefs: [
+		{ orderable: true, className: 'reorder', targets: 0 },
+		{ orderable: false, targets: '_all' }
+	]
+});
 
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	rowReorder: true,
+	columnDefs: [
+		{ orderable: true, className: 'reorder', targets: 0 },
+		{ orderable: false, targets: '_all' }
+	]
+});
+
+]]>
+</js-vanilla>
 
 <title lib="RowReorder">Restricted column ordering (sorting)</title>
 

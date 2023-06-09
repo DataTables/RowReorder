@@ -1,36 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="sequence" table-class="display" order="8">
 
-<css lib="datatables rowreorder">
-	#result {
-		border: 1px solid #888;
-		background: #f7f7f7;
-		padding: 1em;
-		margin-bottom: 1em;
-	}
-</css>
+<css lib="datatables rowreorder" />
 <js lib="jquery datatables rowreorder">
 <![CDATA[
 
-$(document).ready(function() {
-	var table = $('#example').DataTable( {
-		rowReorder: {
-			cancelable: true
-		}
-	} );
+var table = $('#example').DataTable({
+	rowReorder: {
+		cancelable: true
+	}
+});
 
-	table.on( 'pre-row-reorder', function ( e, node, index ) {
-		$('#result').html( 'Drop is not canceled.' );
-	} );
+table.on('pre-row-reorder', function (e, node, index) {
+	$('#result').html('Drop is not canceled.');
+});
 
-	table.on( 'row-reorder-canceled', function ( e, startRowIndex ) {
-		$('#result').html( 'Drop is canceled, starting row index :' + startRowIndex );
-	} );
-
-} );
+table.on('row-reorder-canceled', function (e, startRowIndex) {
+	$('#result').html('Drop is canceled, starting row index :' + startRowIndex);
+});
 
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+
+let table = new DataTable('#example', {
+	rowReorder: {
+		cancelable: true
+	}
+});
+
+table.on('pre-row-reorder', function (e, node, index) {
+	document.querySelector('#result').textContent = 'Drop is not canceled.';
+});
+
+table.on('row-reorder-canceled', function (e, startRowIndex) {
+	document.querySelector('#result').textContent =
+		'Drop is canceled, starting row index :' + startRowIndex;
+});
+
+]]>
+</js-vanilla>
 
 <title lib="RowReorder">Cancelable</title>
 
@@ -41,7 +52,7 @@ The `rr-init rowReorder.cancelable` option provides the ability to make the drag
 ]]></info>
 
 <demo-html>
-	<div id="result">Drop is not canceled.</div>
+	<div id="result" class="box">.</div>
 </demo-html>
 
 </dt-example>

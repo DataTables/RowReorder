@@ -5,26 +5,46 @@
 <js lib="jquery datatables rowreorder">
 <![CDATA[
 
-$(document).ready(function() {
-	var table = $('#example').DataTable( {
-        ajax: '../../../../examples/ajax/data/objects.txt',
-        columns: [
-            { data: 'id' },
-            { data: 'name' },
-            { data: 'position' },
-            { data: 'office' },
-            { data: 'extn' },
-            { data: 'start_date' },
-            { data: 'salary' }
-        ],
-		rowReorder: {
-            dataSrc: 'id'
-        }
-	} );
-} );
+$('#example').DataTable({
+	ajax: '../../../../examples/ajax/data/objects.txt',
+	columns: [
+		{ data: 'id' },
+		{ data: 'name' },
+		{ data: 'position' },
+		{ data: 'office' },
+		{ data: 'extn' },
+		{ data: 'start_date' },
+		{ data: 'salary' }
+	],
+	rowReorder: {
+		dataSrc: 'id'
+	}
+});
 
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	ajax: '../../../../examples/ajax/data/objects.txt',
+	columns: [
+		{ data: 'id' },
+		{ data: 'name' },
+		{ data: 'position' },
+		{ data: 'office' },
+		{ data: 'extn' },
+		{ data: 'start_date' },
+		{ data: 'salary' }
+	],
+	rowReorder: {
+		dataSrc: 'id'
+	}
+});
+
+]]>
+</js-vanilla>
 
 <title lib="RowReorder">Ajax data source with objects</title>
 

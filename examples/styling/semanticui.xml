@@ -5,14 +5,22 @@
 <js lib="jquery semanticui datatables rowreorder">
 <![CDATA[
 
-$(document).ready(function() {
-	$('#example').DataTable( {
-		rowReorder: true
-	} );
-} );
+$('#example').DataTable({
+	rowReorder: true
+});
 
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	rowReorder: true
+});
+
+]]>
+</js-vanilla>
 
 <title lib="RowReorder">Fomantic-UI (formally Semantic-UI) styling</title>
 

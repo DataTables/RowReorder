@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-example table-type="sequence" table-class="display" order="9">
 
-<css lib="datatables rowreorder">
-	#result {
-		border: 1px solid #888;
-		background: #f7f7f7;
-		padding: 1em;
-		margin-bottom: 1em;
-	}
-</css>
+<css lib="datatables rowreorder" />
 <js lib="jquery datatables rowreorder">
 <![CDATA[
 
-$(document).ready(function() {
-	var table = $('#example').DataTable( {
-		rowReorder: true
-	} );
+var table = $('#example').DataTable({
+	rowReorder: true
+});
 
-	table.on( 'pre-row-reorder row-reorder-canceled row-reorder', function ( e, node, index ) {
-		$('#result').html( 'Reordering has not started yet.' );
-	} );
+table.on('pre-row-reorder row-reorder-canceled row-reorder', function (e, node, index) {
+	$('#result').html('Reordering has not started yet.');
+});
 
-	table.on( 'row-reorder-changed', function ( e, { insertPlacement, insertPoint } ) {
-		$('#result').html( 'Row moved ' + insertPlacement + ' the ' + insertPoint + '. row' );
-	} );
-
-} );
+table.on('row-reorder-changed', function (e, { insertPlacement, insertPoint }) {
+	$('#result').html('Row moved ' + insertPlacement + ' row index ' + insertPoint);
+});
 
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+
+let table = new DataTable('#example', {
+	rowReorder: true
+});
+
+table.on('pre-row-reorder row-reorder-canceled row-reorder', function (e, node, index) {
+	document.querySelector('#result').textContent = 'Reordering has not started yet.';
+});
+
+table.on('row-reorder-changed', function (e, { insertPlacement, insertPoint }) {
+	document.querySelector('#result').textContent =
+		`Row moved ${insertPlacement} row index ${insertPoint}`;
+});
+
+]]>
+</js-vanilla>
 
 <title lib="RowReorder">Changed event</title>
 
@@ -38,7 +47,7 @@ This examples shows how the row-reorder-changed event can be listened for and an
 ]]></info>
 
 <demo-html>
-	<div id="result">Reordering has not started yet.</div>
+	<div id="result" class="box">Reordering has not started yet.</div>
 </demo-html>
 
 </dt-example>

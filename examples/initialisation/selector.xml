@@ -5,19 +5,28 @@
 <js lib="jquery datatables rowreorder">
 <![CDATA[
 
-$(document).ready(function() {
-	var table = $('#example').DataTable( {
-		rowReorder: {
-			selector: 'tr'
-		},
-		columnDefs: [
-			{ targets: 0, visible: false }
-		]
-	} );
-} );
+$('#example').DataTable({
+	columnDefs: [{ targets: 0, visible: false }],
+	rowReorder: {
+		selector: 'tr'
+	}
+});
 
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	columnDefs: [{ targets: 0, visible: false }],
+	rowReorder: {
+		selector: 'tr'
+	}
+});
+
+]]>
+</js-vanilla>
 
 <title lib="RowReorder">Full row selection</title>
 

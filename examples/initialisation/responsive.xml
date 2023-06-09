@@ -5,17 +5,28 @@
 <js lib="jquery datatables rowreorder responsive">
 <![CDATA[
 
-$(document).ready(function() {
-	var table = $('#example').DataTable( {
-		rowReorder: {
-			selector: 'td:nth-child(2)'
-		},
-		responsive: true
-	} );
-} );
+$('#example').DataTable({
+	responsive: true,
+	rowReorder: {
+		selector: 'td:nth-child(2)'
+	}
+});
 
 ]]>
 </js>
+
+<js-vanilla>
+<![CDATA[
+
+new DataTable('#example', {
+	responsive: true,
+	rowReorder: {
+		selector: 'td:nth-child(2)'
+	}
+});
+
+]]>
+</js-vanilla>
 
 <title lib="RowReorder">Mobile support (Responsive integration)</title>
 
