@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dt-option library="RowReorder">
 	<name>rowReorder.cancelable</name>
-	<summary>Enable / disable the canceling of the drag & drop interaction</summary>
+	<summary>Enable / disable the canceling of the drag and drop interaction</summary>
 
 	<type type="boolean">
 		<description>
