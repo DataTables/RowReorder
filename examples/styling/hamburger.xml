@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="sequence-reorder-column" table-class="display" order="1">
+
+<css lib="datatables rowreorder">
+table.dataTable td.reorder {
+	color: #999;
+}
+</css>
+<js lib="jquery datatables rowreorder">
+<![CDATA[
+
+$('#example').DataTable({
+	columnDefs: [
+		{
+			className: 'reorder',
+			render: function () {
+				return '≡';
+			},
+			targets: 0
+		},
+		{ orderable: false, targets: '_all' }
+	],
+	order: [[1, 'asc']],
+	rowReorder: true
+});
+
+]]>
+</js>
+
+<js-vanilla>
+<![CDATA[
+new DataTable('#example', {
+	columnDefs: [
+		{
+			className: 'reorder',
+			render: () => '≡',
+			targets: 0
+		},
+		{ orderable: false, targets: '_all' }
+	],
+	order: [[1, 'asc']],
+	rowReorder: true
+});
+
+
+]]>
+</js-vanilla>
+
+<title lib="RowReorder">Hamburger icon for reordering</title>
+
+<info><![CDATA[
+
+This example shows how DataTables' `-init columns.render` option can be used to provide a hamburger icon, which is commonly used in web-interfaces to indicate that items are reorderable. The `-string reorder` class is also used for mouse effects.
+
+]]></info>
+
+</dt-example>
+
