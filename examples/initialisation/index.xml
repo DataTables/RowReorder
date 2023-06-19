@@ -3,6 +3,7 @@
 
 <title lib="RowReorder">Initialisation</title>
 
+<js lib="jquery" />
 <info><![CDATA[
 
 The following examples show the basic initialisation, features and options of RowReorder.

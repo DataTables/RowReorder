@@ -3,6 +3,7 @@
 
 <title lib="RowReorder">RowReorder examples</title>
 
+<js lib="jquery" />
 <info><![CDATA[
 
 RowReorder adds the ability for rows in a DataTable to be reordered through user interaction with the table (click and drag / touch and drag). Integration with Editor's multi-row editing feature is also available to update rows immediately.
