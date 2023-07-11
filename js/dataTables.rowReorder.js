@@ -1,11 +1,11 @@
-/*! RowReorder 1.4.0
+/*! RowReorder 1.4.1-dev
  * © SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     RowReorder
  * @description Row reordering extension for DataTables
- * @version     1.4.0
+ * @version     1.4.1-dev
  * @file        dataTables.rowReorder.js
  * @author      SpryMedia Ltd
  * @contact     datatables.net
@@ -312,10 +312,19 @@ $.extend(RowReorder.prototype, {
 	 * @param  {array} args Event arguments
 	 * @private
 	 */
-	_emitEvent: function (name, args) {
-		this.s.dt.iterator('table', function (ctx, i) {
-			$(ctx.nTable).triggerHandler(name + '.dt', args);
-		});
+	_emitEvent: function ( name, args )
+	{
+		var ret;
+
+		this.s.dt.iterator( 'table', function ( ctx, i ) {
+			var innerRet = $(ctx.nTable).triggerHandler( name+'.dt', args );
+
+			if (innerRet !== undefined) {
+				ret = innerRet;
+			}
+		} );
+
+		return ret;
 	},
 
 	/**
@@ -473,9 +482,6 @@ $.extend(RowReorder.prototype, {
 			return;
 		}
 
-		// Remove cloned elements, handlers, etc
-		this._cleanupDragging();
-
 		// Calculate the difference
 		var startNodes = this.s.start.nodes;
 		var endNodes = $.unique(dt.rows({ page: 'current' }).nodes().toArray());
@@ -520,7 +526,15 @@ $.extend(RowReorder.prototype, {
 		];
 
 		// Emit event
-		this._emitEvent('row-reorder', eventArgs);
+		var eventResult = this._emitEvent( 'row-reorder', eventArgs );
+
+		if (eventResult === false) {
+			that._cancel();
+			return;
+		}
+
+		// Remove cloned elements, handlers, etc
+		this._cleanupDragging();
 
 		var update = function () {
 			if (that.c.update) {
@@ -949,7 +963,7 @@ Api.register('rowReorder.disable()', function () {
  * @name RowReorder.version
  * @static
  */
-RowReorder.version = '1.4.0';
+RowReorder.version = '1.4.1-dev';
 
 $.fn.dataTable.RowReorder = RowReorder;
 $.fn.DataTable.RowReorder = RowReorder;

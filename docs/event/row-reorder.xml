@@ -37,6 +37,8 @@
 
 		This event is triggered when a row is dropped, but prior to the new data being written to the database.
 
+		As of RowReorder 1.4.1 this event is cancellable by returning `false` from the event handler function. If there are multiple event handlers, the last non-`undefined` return value will be used as the return value after all event handlers have been executed in order.
+
 		Please note that, as with all DataTables emitted events, this event is triggered with the `dt` namespace. As such, to listen for this event, you must also use the `dt` namespace by simply appending `.dt` to your event name, or use the `dt-api on()` method to listen for the event which will automatically append this namespace.
 	</description>
 
