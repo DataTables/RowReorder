@@ -21,7 +21,9 @@ $('#example').DataTable({
 		{ orderable: false, targets: '_all' }
 	],
 	order: [[1, 'asc']],
-	rowReorder: true
+	rowReorder: {
+		dataSrc: 1
+	}
 });
 
 ]]>
@@ -39,7 +41,9 @@ new DataTable('#example', {
 		{ orderable: false, targets: '_all' }
 	],
 	order: [[1, 'asc']],
-	rowReorder: true
+	rowReorder: {
+		dataSrc: 1
+	}
 });
 
 
