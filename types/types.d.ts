@@ -29,7 +29,7 @@ declare module 'datatables.net' {
 		rowReorder: ApiRowReorderMethods<T>;
 	}
 
-	interface ApiStatic {
+	interface DataTablesStatic {
 		/**
 		 * RowReorder class
 		 */
