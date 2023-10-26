@@ -39,17 +39,15 @@
 	</description>
 
 	<example title="Add a class to all changed rows"><![CDATA[
-
-var table = $('#example').DataTable( {
+var table = new DataTable('#myTable', {
 	rowReorder: true
-} );
+});
 
-table.on( 'row-reordered', function ( e, diff, edit ) {
-	for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
-		$(diff[i].node).addClass("reordered");
+table.on('row-reordered', function (e, diff, edit) {
+	for (var i = 0, ien = diff.length; i < ien; i++) {
+		$(diff[i].node).addClass('reordered');
 	}
-} );
-
+});
 ]]></example>
 
 </dt-event>

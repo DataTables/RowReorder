@@ -27,23 +27,19 @@
 	</description>
 
 	<example title="Fix the floating row to the table horizontally."><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	rowReorder: {
 		snapX: true
 	}
-} );
-
+});
 ]]></example>
 
 	<example title="Use a -5 pixel offset for the dragged row"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	rowReorder: {
 		snapX: -5
 	}
-} );
-
+});
 ]]></example>
 
 </dt-option>

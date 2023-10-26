@@ -17,11 +17,9 @@
 	</description>
 
 	<example title="Disable row reordering"><![CDATA[
-
-var table = $('#example').DataTable();
+var table = new DataTable('#myTable');
 
 table.rowReorder.disable();
-
 ]]></example>
 
 	<related>-init rowReorder.enable</related>

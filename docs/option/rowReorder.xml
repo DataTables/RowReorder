@@ -28,21 +28,17 @@
 	</description>
 
 	<example title="Enable RowReorder for a table"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	rowReorder: true
-} );
-
+});
 ]]></example>
 
 	<example title="Enable RowReorder with configuration options"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	rowReorder: {
 		selector: ':last-child'
 	}
-} );
-
+});
 ]]></example>
 
 </dt-option>

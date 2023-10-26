@@ -26,15 +26,13 @@
 	</description>
 
 	<example title="Log when row-reorder-changed is fired"><![CDATA[
-
-var table = $('#example').DataTable( {
+var table = new DataTable('#myTable', {
 	rowReorder: true
-} );
+});
 
-table.on( 'row-reorder-changed', function ( e, { insertPlacement, insertPoint  } } ) {
-	console.log( 'Row moved ' + insertPlacement + ' the ' + insertPoint + '. row' );
-} );
-
+table.on('row-reorder-changed', function (e, { insertPlacement, insertPoint }) {
+	console.log('Row moved ' + insertPlacement + ' the ' + insertPoint + '. row');
+});
 ]]></example>
 
 </dt-event>

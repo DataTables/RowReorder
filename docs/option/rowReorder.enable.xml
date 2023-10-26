@@ -18,13 +18,11 @@
 	</description>
 
 	<example title="Disable RowReorder using init options (to later be enabled via the API)"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	rowReorder: {
 		enable: false
 	}
-} );
-
+});
 ]]></example>
 
 	<related>-init rowReorder.enable</related>

@@ -18,11 +18,9 @@
 	</description>
 
 	<example title="Enable row reordering"><![CDATA[
-
-var table = $('#example').DataTable();
+var table = new DataTable('#myTable');
 
 table.rowReorder.enable();
-
 ]]></example>
 
 	<related>-init rowReorder.enable</related>

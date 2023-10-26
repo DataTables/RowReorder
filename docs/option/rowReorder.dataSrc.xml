@@ -26,23 +26,19 @@
 	</description>
 
 	<example title="Enable RowReorder and set the `dataSrc` to the object property `sequence`"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	rowReorder: {
 		dataSrc: 'sequence'
 	}
-} );
-
+});
 ]]></example>
 
 	<example title="Use nested data with a data source"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	rowReorder: {
 		dataSrc: 'race.order'
 	}
-} );
-
+});
 ]]></example>
 
 </dt-option>

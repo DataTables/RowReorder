@@ -20,33 +20,27 @@
 	</description>
 
 	<example title="Enable RowReorder and the drag handle to be the last cell in the row"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	rowReorder: {
 		selector: 'td:last-child'
 	}
-} );
-
+});
 ]]></example>
 
 	<example title="Use a span element in the row - this could be styled to look like a drag handle"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	rowReorder: {
 		selector: 'span.reorder'
 	}
-} );
-
+});
 ]]></example>
 
 	<example title="Use the whole row as the drag start handle"><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	rowReorder: {
 		selector: 'tr'
 	}
-} );
-
+});
 ]]></example>
 
 </dt-option>

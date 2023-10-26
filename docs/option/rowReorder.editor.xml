@@ -21,13 +21,11 @@
 	</description>
 
 	<example title="Attach an Editor instance (`editor`) to RowReorder to write the changes to a database"><![CDATA[
-
-$('#myTable').DataTable( {
+new DataTable('#myTable', {
 	rowReorder: {
 		dataSrc: 'sequence',
-		editor:  editor
+		editor: editor
 	}
-} );
-
+});
 ]]></example>
 </dt-option>

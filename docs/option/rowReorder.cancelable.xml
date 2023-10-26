@@ -18,13 +18,11 @@
 	</description>
 
 	<example title="Disable data update."><![CDATA[
-
-$('#example').DataTable( {
+new DataTable('#myTable', {
 	rowReorder: {
 		cancelable: false
 	}
-} );
-
+});
 ]]></example>
 
 </dt-option>

@@ -22,15 +22,13 @@
 	</description>
 
 	<example title="Log when row reorder action is started"><![CDATA[
-
-var table = $('#example').DataTable( {
+var table = new DataTable('#myTable', {
 	rowReorder: true
-} );
+});
 
-table.on( 'row-reorder-canceled', function ( e, startRowIndex ) {
-	console.log( 'Row reorder canceled: ', startRowIndex );
-} );
-
+table.on('row-reorder-canceled', function (e, startRowIndex) {
+	console.log('Row reorder canceled: ', startRowIndex);
+});
 ]]></example>
 
 </dt-event>

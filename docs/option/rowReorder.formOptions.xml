@@ -21,16 +21,14 @@
 	</description>
 
 	<example title="Submit the full information for all changed rows."><![CDATA[
-
-$('#myTable').DataTable( {
+new DataTable('#myTable', {
 	rowReorder: {
 		dataSrc: 'sequence',
-		editor:  editor,
+		editor: editor,
 		formOptions: {
 			submit: 'allIfChanged'
 		}
 	}
-} );
-
+});
 ]]></example>
 </dt-option>
