@@ -37,7 +37,7 @@ declare module 'datatables.net' {
 			/**
 			 * Create a new RowReorder instance for the target DataTable
 			 */
-			new (dt: Api<any>, settings: boolean | ConfigRowReorder): void;
+			new (dt: Api<any>, settings: boolean | ConfigRowReorder): DataTablesStatic['RowReorder'];
 
 			/**
 			 * RowReorder version
