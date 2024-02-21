@@ -9,11 +9,11 @@
 		<parameter type="object" name="e">
 			jQuery event object
 		</parameter>
-		<parameter type="node" name="node">
-			The row being reordered.
-		</parameter>
-		<parameter type="integer" name="index">
-			The index of the row being reordered. Note this is the internal index of the row, not the display position.
+		<parameter type="object" name="details">
+			An object that contains the following properties:
+
+			* `node` (`-type node`) - The row being reordered.
+			* `index` (`-type integer`) - The index of the row being reordered. Note this is the internal index of the row, not the display position.
 		</parameter>
 		<scope>HTML table element</scope>
 	</type>
@@ -31,8 +31,12 @@ var table = new DataTable('#myTable', {
 	rowReorder: true
 });
 
-table.on('pre-row-reorder', function (e, node, index) {
-	console.log('Row reorder started: ', node, index);
+table.on('pre-row-reorder', function (e, details) {
+	console.log(
+		'Row reorder started: ',
+		details.node,
+		details.index
+	);
 });
 ]]></example>
 
