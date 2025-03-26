@@ -18,7 +18,7 @@ $('#example').DataTable({
 <![CDATA[
 let table = new DataTable('#example', {
     select: true,
-	rowReorder: true,
+    rowReorder: true,
     selector: 'tr',
     select: 'os',
 });
