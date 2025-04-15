@@ -421,11 +421,9 @@ $.extend(RowReorder.prototype, {
 		if (cancelable) {
 			var bodyArea = this.s.bodyArea;
 			var cloneArea = this._calcCloneParentArea();
-			this.s.dropAllowed = this._rectanglesIntersect(bodyArea, cloneArea);
 
-			this.s.dropAllowed
-				? $(this.dom.cloneParent).removeClass('drop-not-allowed')
-				: $(this.dom.cloneParent).addClass('drop-not-allowed');
+			this.s.dropAllowed = this._rectanglesIntersect(bodyArea, cloneArea);
+			$(this.dom.cloneParent).toggleClass('drop-not-allowed', !this.s.dropAllowed);
 		}
 
 		// Transform the mouse position into a position in the table's body
