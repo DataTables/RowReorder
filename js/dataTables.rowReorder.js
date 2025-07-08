@@ -235,7 +235,9 @@ $.extend(RowReorder.prototype, {
 		// Match the table and column widths - read all sizes before setting
 		// to reduce reflows
 		var tableWidth = target.outerWidth();
-		var tableHeight = target.outerHeight();
+		var tableHeight = target.toArray()
+			.map(function (el) { return $(el).outerHeight(); })
+			.reduce(function (accum, val) { return accum + val; });
 		var scrollBody = $($(this.s.dt.table().node()).parent());
 		var scrollWidth = scrollBody.width();
 		var scrollLeft = scrollBody.scrollLeft();
@@ -361,6 +363,26 @@ $.extend(RowReorder.prototype, {
 		start.offsetTop = offset.top;
 		start.offsetLeft = offset.left;
 		start.nodes = $.unique(dt.rows({ page: 'current' }).nodes().toArray());
+
+		var targetRow = dt.row($(target));
+		// Only execute this code if the Select extension is being used
+		if (typeof targetRow.select !== "undefined" && typeof targetRow.selected !== "undefined") {
+			// If we are dragging a row that is not selected, but there are other selected rows, we'll deselect
+			// them first, and then select the current target
+			var selectedRows = [];
+			$.merge(selectedRows, target.siblings('.selected'));
+			if (selectedRows.length > 0 && !targetRow.selected()) {
+				// We might want to remove the previous selection, unless the user is adding more keys by
+				// pressing keyboard combinations, in that case, let Select do its job
+				if (e.shiftKey || e.metaKey || e.ctrlKey) {
+					return;
+				}
+
+				dt.rows().deselect();
+			}
+
+			$.merge(target, target.siblings('.selected'));
+		}
 
 		this._cachePositions();
 		this._clone(target);
@@ -516,7 +538,7 @@ $.extend(RowReorder.prototype, {
 				dataSrc: dataSrc,
 				nodes: diffNodes,
 				values: idDiff,
-				triggerRow: dt.row(this.dom.target),
+				triggerRow: dt.rows(this.dom.target),
 				originalEvent: e
 			}
 		];
@@ -600,12 +622,23 @@ $.extend(RowReorder.prototype, {
 			var nodes = $.unique(dt.rows({ page: 'current' }).nodes().toArray());
 			var insertPlacement = '';
 
+			var nodeInsertPoint = nodes[insertPoint];
 			if (insertPoint > this.s.lastInsert) {
-				this.dom.target.insertAfter(nodes[insertPoint - 1]);
+				var buffer = this.dom.target.length-1;
+
+				if (!nodes[insertPoint + buffer]) {
+					this.dom.target.appendTo(dt.table().body());
+				} else if ($(nodeInsertPoint).hasClass('dt-rowReorder-moving')) {
+					this.dom.target.insertBefore(nodes[insertPoint + buffer]);
+				} else {
+					this.dom.target.insertAfter(nodes[insertPoint + buffer - 1]);
+				}
 				insertPlacement = 'after';
 			}
 			else {
-				this.dom.target.insertBefore(nodes[insertPoint]);
+				if (!$(nodeInsertPoint).hasClass('dt-rowReorder-moving')) {
+					this.dom.target.insertBefore(nodeInsertPoint);
+				}
 				insertPlacement = 'before';
 			}
 
