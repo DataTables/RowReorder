@@ -1,8 +1,6 @@
+@use 'defaults.scss';
+@use 'shared.scss';
 
-$move-outline: 2px solid #0275d8 !default;
-$moved-outline: 2px solid #888 !default;
-
-@use 'rowReorder.dataTables.scss' with (
-  $move-outline: $move-outline,
-  $moved-outline: $moved-outline
-);
+:root {
+	--dtrr-move_outline-color: #0275d8;
+}
