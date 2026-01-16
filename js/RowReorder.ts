@@ -224,8 +224,7 @@ export default class RowReorder {
 			.s(dt.table().node())
 			.clone(false)
 			.classAdd('dt-rowReorder-float')
-			.append(dom.c('tbody'))
-			.append(target.clone(false));
+			.append(dom.c('tbody').append(target.clone(true)));
 
 		// Match the table and column widths - read all sizes before setting
 		// to reduce reflows
