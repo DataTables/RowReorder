@@ -12,11 +12,11 @@ var table = $('#example').DataTable({
 });
 
 table.on('pre-row-reorder', function (e, node, index) {
-	$('#result').html('Drop is not canceled.');
+	$('#result').html('Reorder started.');
 });
 
 table.on('row-reorder-canceled', function (e, startRowIndex) {
-	$('#result').html('Drop is canceled, starting row index :' + startRowIndex);
+	$('#result').html('Drop is canceled, starting row index: ' + startRowIndex);
 });
 
 ]]>
@@ -32,12 +32,12 @@ let table = new DataTable('#example', {
 });
 
 table.on('pre-row-reorder', function (e, node, index) {
-	document.querySelector('#result').textContent = 'Drop is not canceled.';
+	document.querySelector('#result').textContent = 'Reorder started.';
 });
 
 table.on('row-reorder-canceled', function (e, startRowIndex) {
 	document.querySelector('#result').textContent =
-		'Drop is canceled, starting row index :' + startRowIndex;
+		'Drop is canceled, starting row index: ' + startRowIndex;
 });
 
 ]]>
