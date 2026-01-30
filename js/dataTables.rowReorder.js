@@ -205,7 +205,7 @@ $.extend(RowReorder.prototype, {
 		// Need to pass the nodes through jQuery to get them in document order,
 		// not what DataTables thinks it is, since we have been altering the
 		// order
-		var nodes = $.unique(dt.rows({ page: 'current' }).nodes().toArray());
+		var nodes = $.uniqueSort(dt.rows({ page: 'current' }).nodes().toArray());
 		var middles = $.map(nodes, function (node, i) {
 			var top = $(node).position().top - headerHeight;
 
@@ -360,7 +360,7 @@ $.extend(RowReorder.prototype, {
 		start.left = this._eventToPage(e, 'X');
 		start.offsetTop = offset.top;
 		start.offsetLeft = offset.left;
-		start.nodes = $.unique(dt.rows({ page: 'current' }).nodes().toArray());
+		start.nodes = $.uniqueSort(dt.rows({ page: 'current' }).nodes().toArray());
 
 		this._cachePositions();
 		this._clone(target);
@@ -480,7 +480,7 @@ $.extend(RowReorder.prototype, {
 
 		// Calculate the difference
 		var startNodes = this.s.start.nodes;
-		var endNodes = $.unique(dt.rows({ page: 'current' }).nodes().toArray());
+		var endNodes = $.uniqueSort(dt.rows({ page: 'current' }).nodes().toArray());
 		var idDiff = {};
 		var fullDiff = [];
 		var diffNodes = [];
@@ -597,7 +597,7 @@ $.extend(RowReorder.prototype, {
 
 		// Perform the DOM shuffle if it has changed from last time
 		if (this.s.lastInsert === null || this.s.lastInsert !== insertPoint) {
-			var nodes = $.unique(dt.rows({ page: 'current' }).nodes().toArray());
+			var nodes = $.uniqueSort(dt.rows({ page: 'current' }).nodes().toArray());
 			var insertPlacement = '';
 
 			if (insertPoint > this.s.lastInsert) {
@@ -792,7 +792,7 @@ $.extend(RowReorder.prototype, {
 		// position
 
 		var dt = this.s.dt;
-		var nodes = $.unique(dt.rows({ page: 'current' }).nodes().toArray());
+		var nodes = $.uniqueSort(dt.rows({ page: 'current' }).nodes().toArray());
 		var rowIndex = -1;
 		var headerHeight = $(dt.table().node()).find('thead').outerHeight();
 
