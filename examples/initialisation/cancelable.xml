@@ -2,27 +2,7 @@
 <dt-example table-type="sequence" table-class="display" order="8">
 
 <css lib="datatables rowreorder" />
-<js lib="jquery datatables rowreorder">
-<![CDATA[
-
-var table = $('#example').DataTable({
-	rowReorder: {
-		cancelable: true
-	}
-});
-
-table.on('pre-row-reorder', function (e, node, index) {
-	$('#result').html('Reorder started.');
-});
-
-table.on('row-reorder-canceled', function (e, startRowIndex) {
-	$('#result').html('Drop is canceled, starting row index: ' + startRowIndex);
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables rowreorder">
 <![CDATA[
 
 let table = new DataTable('#example', {
@@ -41,7 +21,7 @@ table.on('row-reorder-canceled', function (e, startRowIndex) {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="RowReorder">Cancelable</title>
 

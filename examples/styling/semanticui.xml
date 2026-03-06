@@ -2,17 +2,7 @@
 <dt-example table-type="sequence" table-class="display" order="7" framework="semanticui">
 
 <css lib="datatables rowreorder"/>
-<js lib="jquery semanticui datatables rowreorder">
-<![CDATA[
-
-$('#example').DataTable({
-	rowReorder: true
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="semanticui datatables rowreorder">
 <![CDATA[
 
 new DataTable('#example', {
@@ -20,7 +10,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="RowReorder">Fomantic-UI (formally Semantic-UI) styling</title>
 

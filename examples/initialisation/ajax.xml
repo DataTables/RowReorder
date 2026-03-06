@@ -2,29 +2,7 @@
 <dt-example table-type="ajax-id" table-class="display" order="1">
 
 <css lib="datatables rowreorder" />
-<js lib="jquery datatables rowreorder">
-<![CDATA[
-
-$('#example').DataTable({
-	ajax: '../../../../examples/ajax/data/objects.txt',
-	columns: [
-		{ data: 'id' },
-		{ data: 'name' },
-		{ data: 'position' },
-		{ data: 'office' },
-		{ data: 'extn' },
-		{ data: 'start_date' },
-		{ data: 'salary' }
-	],
-	rowReorder: {
-		dataSrc: 'id'
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables rowreorder">
 <![CDATA[
 
 new DataTable('#example', {
@@ -44,7 +22,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="RowReorder">Ajax data source with objects</title>
 

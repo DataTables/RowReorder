@@ -6,30 +6,7 @@ table.dataTable td.reorder {
 	color: #999;
 }
 </css>
-<js lib="jquery datatables rowreorder">
-<![CDATA[
-
-$('#example').DataTable({
-	columnDefs: [
-		{
-			className: 'reorder',
-			render: function () {
-				return '≡';
-			},
-			targets: 0
-		},
-		{ orderable: false, targets: '_all' }
-	],
-	order: [[1, 'asc']],
-	rowReorder: {
-		dataSrc: 1
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables rowreorder">
 <![CDATA[
 new DataTable('#example', {
 	columnDefs: [
@@ -48,7 +25,7 @@ new DataTable('#example', {
 
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="RowReorder">Hamburger icon for reordering</title>
 

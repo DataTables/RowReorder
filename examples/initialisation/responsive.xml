@@ -2,20 +2,7 @@
 <dt-example table-type="sequence-wide" table-class="display nowrap" order="3">
 
 <css lib="datatables rowreorder responsive" />
-<js lib="jquery datatables rowreorder responsive">
-<![CDATA[
-
-$('#example').DataTable({
-	responsive: true,
-	rowReorder: {
-		selector: 'td:nth-child(2)'
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables rowreorder responsive">
 <![CDATA[
 
 new DataTable('#example', {
@@ -26,7 +13,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="RowReorder">Mobile support (Responsive integration)</title>
 

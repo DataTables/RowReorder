@@ -2,17 +2,7 @@
 <dt-example table-type="sequence" table-class="display" order="3" framework="bootstrap">
 
 <css lib="datatables rowreorder"/>
-<js lib="jquery datatables rowreorder">
-<![CDATA[
-
-$('#example').DataTable({
-	rowReorder: true
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables rowreorder">
 <![CDATA[
 
 new DataTable('#example', {
@@ -20,7 +10,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="RowReorder">Bootstrap styling</title>
 

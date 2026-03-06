@@ -2,22 +2,7 @@
 <dt-example table-type="sequence" table-class="display" order="7">
 
 <css lib="datatables rowreorder" />
-<js lib="jquery datatables rowreorder">
-<![CDATA[
-
-// Set the RowReorder defaults
-$.extend(DataTable.RowReorder.defaults, { selector: 'tr' });
-
-// Enable RowReorder by default
-DataTable.defaults.rowReorder = true;
-
-// Initialise DataTable
-$('#example').DataTable();
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables rowreorder">
 <![CDATA[
 
 // Set the RowReorder defaults
@@ -30,7 +15,7 @@ DataTable.defaults.rowReorder = true;
 new DataTable('#example');
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="RowReorder">Defaults</title>
 

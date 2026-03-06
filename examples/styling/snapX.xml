@@ -2,19 +2,7 @@
 <dt-example table-type="sequence" table-class="display" order="2">
 
 <css lib="datatables rowreorder" />
-<js lib="jquery datatables rowreorder">
-<![CDATA[
-
-$('#example').DataTable({
-	rowReorder: {
-		snapX: 10
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables rowreorder">
 <![CDATA[
 
 new DataTable('#example', {
@@ -24,7 +12,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="RowReorder">Horizontal snap</title>
 

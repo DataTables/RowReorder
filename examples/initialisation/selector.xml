@@ -2,20 +2,7 @@
 <dt-example table-type="sequence" table-class="display" order="4">
 
 <css lib="datatables rowreorder" />
-<js lib="jquery datatables rowreorder">
-<![CDATA[
-
-$('#example').DataTable({
-	columnDefs: [{ targets: 0, visible: false }],
-	rowReorder: {
-		selector: 'tr'
-	}
-});
-
-]]>
-</js>
-
-<js-vanilla>
+<js lib="datatables rowreorder">
 <![CDATA[
 
 new DataTable('#example', {
@@ -26,7 +13,7 @@ new DataTable('#example', {
 });
 
 ]]>
-</js-vanilla>
+</js>
 
 <title lib="RowReorder">Full row selection</title>
 
