@@ -1,3 +1,3 @@
-/*! Semanic UI styling wrapper for RowReorder
- * © SpryMedia Ltd - datatables.net/license
+/*! RowReorder Semantic UI styling for DataTables
+ * Copyright (c) SpryMedia Ltd - datatables.net/license
  */

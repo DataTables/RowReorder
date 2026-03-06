@@ -1,3 +1,3 @@
-/*! Bulma styling wrapper for RowReorder
- * © SpryMedia Ltd - datatables.net/license
+/*! RowReorder Bulma styling for DataTables
+ * Copyright (c) SpryMedia Ltd - datatables.net/license
  */

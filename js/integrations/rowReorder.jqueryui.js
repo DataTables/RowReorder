@@ -1,3 +1,3 @@
-/*! jQuery UI styling wrapper for RowReorder
- * © SpryMedia Ltd - datatables.net/license
+/*! RowReorder jQuery UI styling for DataTables
+ * Copyright (c) SpryMedia Ltd - datatables.net/license
  */

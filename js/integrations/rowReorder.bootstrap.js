@@ -1,4 +1,3 @@
-/*! Bootstrap 3 styling wrapper for RowReorder
- * © SpryMedia Ltd - datatables.net/license
+/*! RowReorder Bootstrap 3 styling for DataTables
+ * Copyright (c) SpryMedia Ltd - datatables.net/license
  */
-

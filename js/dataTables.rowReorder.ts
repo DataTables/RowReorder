@@ -1,16 +1,11 @@
+/*! RowReorder for DataTables
+ * Copyright (c) SpryMedia Ltd - datatables.net/license
+ */
 
-import DataTable, { Context } from 'datatables.net';
+import DataTable, { Api, Context, Dom, util } from 'datatables.net';
 import './interface';
 import { Defaults } from './interface';
 import RowReorder from './RowReorder';
-
-if (!DataTable.versionCheck('3')) {
-	throw 'Warning: Select requires DataTables 3 or newer';
-}
-
-const Api = DataTable.Api;
-const dom = DataTable.dom;
-const util = DataTable.util;
 
 // Doesn't do anything - work around for a bug in DT... Not documented
 Api.register('rowReorder()', function () {
@@ -41,7 +36,7 @@ DataTable.RowReorder = RowReorder;
 
 // Attach a listener to the document which listens for DataTables initialisation
 // events so we can automatically initialise
-dom.s(document).on('init.dt.dtr', function (e, settings: Context, json) {
+Dom.s(document).on('init.dt.dtr', function (e, settings: Context, json) {
 	if (e.namespace !== 'dt') {
 		return;
 	}

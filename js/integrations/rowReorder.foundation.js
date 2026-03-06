@@ -1,3 +1,3 @@
-/*! Foundation styling wrapper for RowReorder
- * © SpryMedia Ltd - datatables.net/license
+/*! RowReorder Foundation styling for DataTables
+ * Copyright (c) SpryMedia Ltd - datatables.net/license
  */

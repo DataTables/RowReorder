@@ -1,10 +1,3 @@
-// Type definitions for DataTables RowReorder
-//
-// Project: https://datatables.net/extensions/rowreorder/, https://datatables.net
-// Definitions by:
-//   SpryMedia
-//   Vincent Biret <https://github.com/baywet>
-
 import DataTables, { Api, Dom } from 'datatables.net';
 import RowReorder from './RowReorder';
 

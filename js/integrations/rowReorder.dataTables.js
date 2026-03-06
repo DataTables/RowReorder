@@ -1,3 +1,3 @@
-/*! DataTables styling wrapper for RowReorder
- * © SpryMedia Ltd - datatables.net/license
+/*! RowReorder default styling for DataTables
+ * Copyright (c) SpryMedia Ltd - datatables.net/license
  */

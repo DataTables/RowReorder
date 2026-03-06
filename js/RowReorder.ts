@@ -1,13 +1,10 @@
-import DataTable, { Api, Context, Dom } from 'datatables.net';
+import DataTable, { Api, Context, Dom, util } from 'datatables.net';
 import { Area, Defaults, Diff, InternalDom, Settings } from './interface';
 
 // Sanity check that we are using DataTables
 if (!DataTable || !DataTable.versionCheck('3')) {
 	throw 'DataTables RowReorder requires DataTables 3 or newer';
 }
-
-const dom = DataTable.dom;
-const util = DataTable.util;
 
 /**
  * RowReorder provides the ability in DataTables to click and drag rows to
@@ -37,6 +34,8 @@ export default class RowReorder {
 		excludedChildren: 'a',
 		cancelable: false
 	};
+
+	public static version = '2.0.0-dev';
 
 	private c: Defaults;
 	private s: Settings;
@@ -101,10 +100,10 @@ export default class RowReorder {
 		this.dom = {
 			clone: null,
 			cloneParent: null,
-			dtScroll: dom
+			dtScroll: Dom
 				.s(this.s.dt.table().container())
 				.find('div.dt-scroll-body'),
-			target: new dom.Dom()
+			target: new Dom()
 		};
 
 		// Check if row reorder has already been initialised on this table
@@ -116,7 +115,7 @@ export default class RowReorder {
 		}
 
 		if (!this.dom.dtScroll.count()) {
-			this.dom.dtScroll = dom.s(this.s.dt.table().body());
+			this.dom.dtScroll = Dom.s(this.s.dt.table().body());
 		}
 
 		settings.rowreorder = this;
@@ -129,7 +128,7 @@ export default class RowReorder {
 	private _init() {
 		var that = this;
 		var dt = this.s.dt;
-		var table = dom.s(dt.table().node());
+		var table = Dom.s(dt.table().node());
 
 		// Need to be able to calculate the row positions relative to the table
 		if (table.css('position') === 'static') {
@@ -142,7 +141,7 @@ export default class RowReorder {
 		// not supported.
 		// Use `table().container()` rather than just the table node for IE8 -
 		// otherwise it only works once...
-		dom.s(dt.table().container()).on(
+		Dom.s(dt.table().container()).on(
 			'mousedown.rowReorder touchstart.rowReorder',
 			this.c.selector,
 			function (e) {
@@ -151,11 +150,11 @@ export default class RowReorder {
 				}
 
 				// Ignore excluded children of the selector
-				if (dom.s(e.target).filter(that.c.excludedChildren).count()) {
+				if (Dom.s(e.target).filter(that.c.excludedChildren).count()) {
 					return true;
 				}
 
-				var tr = dom.s(this).closest('tr');
+				var tr = Dom.s(this).closest('tr');
 				var row = dt.row(tr);
 
 				// Double check that it is a DataTable row
@@ -174,7 +173,7 @@ export default class RowReorder {
 		);
 
 		dt.on('destroy.rowReorder', function () {
-			dom.s(dt.table().container()).off('.rowReorder');
+			Dom.s(dt.table().container()).off('.rowReorder');
 			dt.off('.rowReorder');
 		});
 
@@ -191,7 +190,7 @@ export default class RowReorder {
 		// Frustratingly, if we add `position:relative` to the tbody, the
 		// position is still relatively to the parent. So we need to adjust
 		// for that
-		var headerHeight = dom
+		var headerHeight = Dom
 			.s(dt.table().node())
 			.find('thead')
 			.height('outer');
@@ -199,16 +198,16 @@ export default class RowReorder {
 		// Need to pass the nodes through DOM to get them in document order,
 		// not what DataTables thinks it is, since we have been altering the
 		// order
-		var nodes = dom.s(dt.rows({ page: 'current' }).nodes().toArray());
+		var nodes = Dom.s(dt.rows({ page: 'current' }).nodes().toArray());
 		var middles = nodes.mapTo(node => {
-			var top = dom.s(node).position().top - headerHeight;
+			var top = Dom.s(node).position().top - headerHeight;
 
-			return (top + top + dom.s(node).height('outer')) / 2;
+			return (top + top + Dom.s(node).height('outer')) / 2;
 		});
 
 		this.s.middles = middles;
-		this.s.bodyTop = dom.s(dt.table().body()).offset().top;
-		this.s.windowHeight = dom.w.height();
+		this.s.bodyTop = Dom.s(dt.table().body()).offset().top;
+		this.s.windowHeight = Dom.w.height();
 		this.s.documentOuterHeight = document.documentElement.offsetHeight;
 		this.s.bodyArea = this._calcBodyArea();
 	}
@@ -220,21 +219,21 @@ export default class RowReorder {
 	 */
 	private _clone(target: Dom) {
 		var dt = this.s.dt;
-		var clone = dom
+		var clone = Dom
 			.s(dt.table().node())
 			.clone(false)
 			.classAdd('dt-rowReorder-float')
-			.append(dom.c('tbody').append(target.clone(true)));
+			.append(Dom.c('tbody').append(target.clone(true)));
 
 		// Match the table and column widths - read all sizes before setting
 		// to reduce reflows
 		var tableWidth = target.width('outer');
 		var tableHeight = target.height('outer');
-		var scrollBody = dom.s(this.s.dt.table().node()).parent();
+		var scrollBody = Dom.s(this.s.dt.table().node()).parent();
 		var scrollWidth = scrollBody.width();
 		var scrollLeft = scrollBody.scrollLeft();
 		var sizes = target.children().mapTo(el => {
-			return dom.s(el).width();
+			return Dom.s(el).width();
 		});
 
 		clone
@@ -246,7 +245,7 @@ export default class RowReorder {
 				el.style.width = sizes[i] + 'px';
 			});
 
-		var cloneParent = dom
+		var cloneParent = Dom
 			.c('div')
 			.classAdd('dt-rowReorder-float-parent')
 			.width(scrollWidth)
@@ -348,7 +347,7 @@ export default class RowReorder {
 		start.left = this._eventToPage(e, 'X');
 		start.offsetTop = offset.top;
 		start.offsetLeft = offset.left;
-		start.nodes = dom
+		start.nodes = Dom
 			.s(dt.rows({ page: 'current' }).nodes().toArray())
 			.get();
 
@@ -362,7 +361,7 @@ export default class RowReorder {
 		this.dom.target = target;
 		target.classAdd('dt-rowReorder-moving');
 
-		dom.s(document)
+		Dom.s(document)
 			.on('mouseup.rowReorder touchend.rowReorder', function (e) {
 				that._mouseUp(e);
 			})
@@ -373,7 +372,7 @@ export default class RowReorder {
 		// Check if window is x-scrolling - if not, disable it for the duration
 		// of the drag
 		if (window.innerWidth === document.body.clientWidth) {
-			dom.s(document.body).classAdd('dt-rowReorder-noOverflow');
+			Dom.s(document.body).classAdd('dt-rowReorder-noOverflow');
 		}
 
 		// Cache scrolling information so mouse move doesn't need to read.
@@ -381,8 +380,8 @@ export default class RowReorder {
 		// during an row drag, which I think is a fair assumption
 		var scrollWrapper = this.dom.dtScroll;
 		this.s.scroll = {
-			windowHeight: dom.w.height(),
-			windowWidth: dom.w.width(),
+			windowHeight: Dom.w.height(),
+			windowWidth: Dom.w.width(),
 			dtTop: scrollWrapper.count() ? scrollWrapper.offset().top : null,
 			dtLeft: scrollWrapper.count() ? scrollWrapper.offset().left : null,
 			dtHeight: scrollWrapper.count()
@@ -393,7 +392,7 @@ export default class RowReorder {
 
 		// Add keyup handler if dragging is cancelable
 		if (cancelable) {
-			dom.s(document).on('keyup', this._keyup);
+			Dom.s(document).on('keyup', this._keyup);
 		}
 	}
 
@@ -479,7 +478,7 @@ export default class RowReorder {
 
 		// Calculate the difference
 		var startNodes = this.s.start.nodes;
-		var endNodes = dom
+		var endNodes = Dom
 			.s(dt.rows({ page: 'current' }).nodes().toArray())
 			.get();
 		var idDiff: Record<string, string> = {};
@@ -606,7 +605,7 @@ export default class RowReorder {
 
 		// Perform the DOM shuffle if it has changed from last time
 		if (this.s.lastInsert === null || this.s.lastInsert !== insertPoint) {
-			var nodes = dom
+			var nodes = Dom
 				.s(dt.rows({ page: 'current' }).nodes().toArray())
 				.get();
 			var insertPlacement = '';
@@ -648,14 +647,14 @@ export default class RowReorder {
 		this.dom.target.classRemove('dt-rowReorder-moving');
 		//this.dom.target = null;
 
-		dom.s(document).off('.rowReorder');
-		dom.s(document.body).classRemove('dt-rowReorder-noOverflow');
+		Dom.s(document).off('.rowReorder');
+		Dom.s(document.body).classRemove('dt-rowReorder-noOverflow');
 
 		clearInterval(this.s.scrollInterval);
 		this.s.scrollInterval = null;
 
 		if (cancelable) {
-			dom.s(document).off('keyup', this._keyup);
+			Dom.s(document).off('keyup', this._keyup);
 		}
 	}
 
@@ -680,10 +679,10 @@ export default class RowReorder {
 
 		// Window calculations - based on the mouse position in the window,
 		// regardless of scrolling
-		if (windowY < dom.w.scrollTop() + buffer) {
+		if (windowY < Dom.w.scrollTop() + buffer) {
 			windowVert = scrollSpeed * -1;
 		}
-		else if (windowY > scroll.windowHeight + dom.w.scrollTop() - buffer) {
+		else if (windowY > scroll.windowHeight + Dom.w.scrollTop() - buffer) {
 			windowVert = scrollSpeed;
 		}
 
@@ -725,10 +724,10 @@ export default class RowReorder {
 				// Don't need to worry about setting scroll <0 or beyond the
 				// scroll bound as the browser will just reject that.
 				if (scroll.windowVert) {
-					var top = dom.w.scrollTop();
-					dom.w.scrollTop(top + scroll.windowVert);
+					var top = Dom.w.scrollTop();
+					Dom.w.scrollTop(top + scroll.windowVert);
 
-					if (top !== dom.w.scrollTop() && that.dom.cloneParent) {
+					if (top !== Dom.w.scrollTop() && that.dom.cloneParent) {
 						var move = parseFloat(that.dom.cloneParent.css('top'));
 						that.dom.cloneParent.css(
 							'top',
@@ -754,7 +753,7 @@ export default class RowReorder {
 	 */
 	private _calcBodyArea() {
 		let dt = this.s.dt;
-		let body = dom.s(dt.table().body());
+		let body = Dom.s(dt.table().body());
 		let offset = body.offset();
 		let area = {
 			left: offset.left,
@@ -815,16 +814,16 @@ export default class RowReorder {
 		// Determine where the row is located based on the mouse position
 
 		var dt = this.s.dt;
-		var nodes = dom.s(dt.rows({ page: 'current' }).nodes().toArray()).get();
+		var nodes = Dom.s(dt.rows({ page: 'current' }).nodes().toArray()).get();
 		var rowIndex = -1;
-		var headerHeight = dom
+		var headerHeight = Dom
 			.s(dt.table().node())
 			.find('thead')
 			.height('outer');
 
 		nodes.forEach((node, i) => {
-			var top = dom.s(node).position().top - headerHeight;
-			var bottom = top + dom.s(node).height('outer');
+			var top = Dom.s(node).position().top - headerHeight;
+			var bottom = top + Dom.s(node).height('outer');
 
 			if (bodyY >= top && bodyY <= bottom) {
 				rowIndex = i;
