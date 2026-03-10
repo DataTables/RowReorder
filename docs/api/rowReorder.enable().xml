@@ -10,7 +10,7 @@
 		<parameter type="boolean" name="enable" default="true">
 			Flag that can be used to indicate if row reordering should be enabled or disabled.
 		</parameter>
-		<returns type="DataTables.Api">DataTables API instance</returns>
+		<returns type="DataTable.Api">DataTables API instance</returns>
 	</type>
 
 	<description>

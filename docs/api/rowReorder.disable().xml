@@ -7,7 +7,7 @@
 	<type type="function">
 		<signature>rowReorder.disable()</signature>
 		<description>Disable the end user's ability to click and drag to reorder rows.</description>
-		<returns type="DataTables.Api">DataTables API instance</returns>
+		<returns type="DataTable.Api">DataTables API instance</returns>
 	</type>
 
 	<description>
