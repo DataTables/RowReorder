@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dt-example table-type="sequence" table-class="display" order="10">
+<title lib="RowReorder">Multi row reorder</title>
+
+<css lib="datatables rowreorder select" />
+<js lib="jquery datatables rowreorder select">
+<![CDATA[
+$('#example').DataTable({
+    select: true,
+    rowReorder: true,
+    selector: 'tr',
+    select: 'os',
+});
+]]>
+</js>
+
+<js-vanilla>
+<![CDATA[
+let table = new DataTable('#example', {
+    select: true,
+    rowReorder: true,
+    selector: 'tr',
+    select: 'os',
+});
+]]>
+</js-vanilla>
+
+<info><![CDATA[
+The following example demonstrates how the RowReorder extension can work together with Select, if it's in use, in order to make multiple row reordering possible.
+]]></info>
+
+</dt-example>
