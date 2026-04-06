@@ -35,7 +35,7 @@ export default class RowReorder {
 		cancelable: false
 	};
 
-	public static version = '2.0.0-dev';
+	public static version = '2.0.0-beta.1';
 
 	private c: Defaults;
 	private s: Settings;
