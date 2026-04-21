@@ -480,6 +480,7 @@ export default class RowReorder {
 		var startNodes = this.s.start.nodes;
 		var endNodes = Dom
 			.s(dt.rows({ page: 'current' }).nodes().toArray())
+			.sort()
 			.get();
 		var idDiff: Record<string, string> = {};
 		var fullDiff: Diff[] = [];
