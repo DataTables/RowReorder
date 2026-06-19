@@ -7,7 +7,7 @@
 	<type type="function">
 		<signature>function( e, node, position )</signature>
 		<parameter type="object" name="e">
-			jQuery event object
+			Event object
 		</parameter>
 		<parameter type="object" name="details">
 			An object that contains the following properties:

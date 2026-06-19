@@ -7,7 +7,7 @@
 	<type type="function">
 		<signature>function( e, params )</signature>
 		<parameter type="object" name="e">
-			jQuery event object
+			Event object
 		</parameter>
 		<parameter type="object" name="params">
 			This parameter provides the following information:
