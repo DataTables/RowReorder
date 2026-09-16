@@ -2,8 +2,8 @@ import DataTable, { Api, Context, Dom, util } from 'datatables.net';
 import { Area, Defaults, Diff, InternalDom, Settings } from './interface';
 
 // Sanity check that we are using DataTables
-if (!DataTable || !DataTable.versionCheck('3')) {
-	throw 'DataTables RowReorder requires DataTables 3 or newer';
+if (!DataTable || !DataTable.versionCheck('3.1')) {
+	throw 'DataTables RowReorder requires DataTables 3.1 or newer';
 }
 
 /**
